@@ -174,14 +174,14 @@
 
     var currentLanguage = "en";
 
-    document.getElementById("language-button").addEventListener("click", function() {
+      document.querySelector(".language-button").addEventListener("click", function() {
       // Cambia la lingua quando si clicca sul pulsante
       currentLanguage = currentLanguage === "en" ? "it" : "en";
       // Aggiorna il testo della pagina con la traduzione corrispondente
       document.getElementById("title").textContent = translations[currentLanguage].title;
       document.getElementById("button1").textContent = translations[currentLanguage].button1;
       document.getElementById("button2").textContent = translations[currentLanguage].button2;
-      document.getElementById("language-button").textContent = translations[currentLanguage].language;
+      document.querySelector(".language-button").textContent = translations[currentLanguage].language;
     });
   </script>
 </body>
