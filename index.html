@@ -2,54 +2,60 @@
 <h1 style="background-color:White;"><center>MAINTENANCE!</center></h1>
 <html>
 <head>
-  <title>Work in progress...</title>
-<style>
-.button {
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  width: 100%;
-}
+    <title>Work in progress...</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .button {
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      width: 100%;
+    }
 
-.button1 {
-  background-color: white; 
-  color: black; 
-  border: 2px solid #04AA6D;
-  float: left;
-}
+    .button1 {
+      background-color: white; 
+      color: black; 
+      border: 2px solid #04AA6D;
+      float: left;
+    }
 
-.button1:hover {
-  background-color: #04AA6D;
-  color: white;
-}
+    .button1:hover {
+      background-color: #04AA6D;
+      color: white;
+    }
 
-.button2 {
-  background-color: white; 
-  color: black; 
-  border: 2px solid #008CBA;
-  float: right;
-}
+    .button2 {
+      background-color: white; 
+      color: black; 
+      border: 2px solid #008CBA;
+      float: right;
+    }
 
-.button2:hover {
-  background-color: #008CBA;
-  color: white;
-}
-@media (min-width: 768px) {
-  .button {
-    width: auto;
-  }
-}
-</style>
+    .button2:hover {
+      background-color: #008CBA;
+      color: white;
+    }
+    @media (min-width: 768px) {
+      .button {
+        width: auto;
+      }
+    }
+  </style>
 </head>
-<body>
-<center><button class="button button1">Testing</button></center>
-<center><button class="button button2">Testing</button></center>
-</body>
+  <body>
+    <div class="container">
+      <button class="button button1">Testing</button>
+      <button class="button button2">Testing</button>
+    </div>
+  </body>
 </html>
