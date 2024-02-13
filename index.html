@@ -22,6 +22,7 @@
       justify-content: space-between;
       max-width: 600px; 
       width: 100%; 
+      z-index: -1;
     }
     .button {
       border: none;
@@ -69,10 +70,17 @@
       h1 {
         font-size: 3em;
       }
+    }    
+    .language-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
     }
   </style>
 </head>
   <div id="particles-js"></div>
+   <button class="language-button">EN/IT</button>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
     /* Funzione per rilevare se l'utente sta utilizzando un dispositivo mobile */
