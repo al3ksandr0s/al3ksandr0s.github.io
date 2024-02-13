@@ -149,11 +149,38 @@
 
     particlesJS('particles-js', config);
   </script>
-  <body>
-    <h1 style="background-color:White;"><center>Ma tutto bianco non è brutto?</center></h1>
-    <div class="container">
-      <button class="button button1">Soldi Gratis!💶</button>
-      <button class="button button2">Labirinto🤤</button>
-    </div>
-  </body>
+<body>
+  <button id="language-button">EN/IT</button>
+  <h1 id="title" style="background-color:White;"><center>Ma tutto bianco non è brutto?</center></h1>
+  <div class="container">
+    <button class="button button1" id="button1">Free Money!💶</button>
+    <button class="button button2" id="button2">Maze🤤</button>
+  </div>
+  <!-- Il resto del tuo HTML va qui -->
+  <script>
+    var translations = {
+      "en": {
+        "title": "But isn't all white bad?",
+        "button1": "Free Money!💶",
+        "button2": "Maze🤤"
+      },
+      "it": {
+        "title": "Ma tutto bianco non è brutto?",
+        "button1": "Soldi Gratis!💶",
+        "button2": "Labirinto🤤"
+      }
+    };
+
+    var currentLanguage = "en";
+
+    document.getElementById("language-button").addEventListener("click", function() {
+      // Cambia la lingua quando si clicca sul pulsante
+      currentLanguage = currentLanguage === "en" ? "it" : "en";
+      // Aggiorna il testo della pagina con la traduzione corrispondente
+      document.getElementById("title").textContent = translations[currentLanguage].title;
+      document.getElementById("button1").textContent = translations[currentLanguage].button1;
+      document.getElementById("button2").textContent = translations[currentLanguage].button2;
+    });
+  </script>
+</body>
 </html>
