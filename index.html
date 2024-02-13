@@ -71,66 +71,53 @@
   <div id="particles-js"></div>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    particlesJS('particles-js',
-      {
-        "particles": {
-          "number": {
-            "value": 80
-          },
-          "size": {
-            "value": 3
-          },
-          "color": { "value": "#000000" },
-          "line_linked": { /* Aggiungi questa sezione per abilitare le linee tra le particelle */
+    /* Funzione per rilevare se l'utente sta utilizzando un dispositivo mobile */
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    /* Configurazione delle particelle */
+    var config = {
+      "particles": {
+        "number": {
+          "value": 80
+        },
+        "size": {
+          "value": 3
+        },
+        "color": { "value": "#000000" },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#000000",
+          "opacity": 0.4,
+          "width": 1
+        }
+      },
+      "interactivity": {
+        "detect_on": "window",
+        "events": {
+          "onhover": {
             "enable": true,
-            "distance": 150,
-            "color": "#000000",
-            "opacity": 0.4,
-            "width": 1
-          }
-        },
-        "interactivity": {
-          "detect_on": "window",
-          "events": {
-            "onhover": {
-              "enable": true,
-              "mode": "connect" /* Cambia questa linea per far collegare le particelle al cursore o al dito */
-            },
-            "onclick": {
-              "enable": true,
-              "mode": "push"
-            },
-            "resize": true
+            "mode": "connect"
           },
-          "modes": {
-            "grab": {
-              "distance": 400,
-              "line_linked": {
-                "opacity": 1
-              }
-            },
-            "bubble": {
-              "distance": 400,
-              "size": 40,
-              "duration": 2,
-              "opacity": 8,
-              "speed": 3
-            },
-            "repulse": {
-              "distance": 200,
-              "duration": 0.4
-            },
-            "push": {
-              "particles_nb": 4
-            },
-            "remove": {
-              "particles_nb": 2
-            }
-          }
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
         },
-        "retina_detect": true
-      }
-    );
+        "modes": {
+          "push": {
+            "particles_nb": isMobile() ? 1 : 4 /* Genera solo una particella quando clicchi se l'utente sta utilizzando un dispositivo mobile */
+          },
+          /* Il resto del tuo codice va qui */
+        }
+      },
+      "retina_detect": true
+    };
+
+    particlesJS('particles-js', config);
   </script>
   <body>
     <h1 style="background-color:White;"><center>Ma tutto bianco non è brutto?</center></h1>
