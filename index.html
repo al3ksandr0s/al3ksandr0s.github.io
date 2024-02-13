@@ -162,12 +162,14 @@
       "en": {
         "title": "But isn't all white bad?",
         "button1": "Free Money!💶",
-        "button2": "Maze🤤"
+        "button2": "Maze🤤",
+        "language": "EN/IT"
       },
       "it": {
         "title": "Ma tutto bianco non è brutto?",
         "button1": "Soldi Gratis!💶",
-        "button2": "Labirinto🤤"
+        "button2": "Labirinto🤤",
+        "language": "IT/EN"
       }
     };
 
@@ -180,6 +182,7 @@
       document.getElementById("title").textContent = translations[currentLanguage].title;
       document.getElementById("button1").textContent = translations[currentLanguage].button1;
       document.getElementById("button2").textContent = translations[currentLanguage].button2;
+      document.getElementById("language-button").textContent = translations[currentLanguage].language;
     });
   </script>
 </body>
