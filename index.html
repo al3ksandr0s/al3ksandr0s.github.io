@@ -11,6 +11,12 @@
       align-items: center; 
       justify-content: center; 
     }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
     .container {
       display: flex;
       justify-content: space-between;
@@ -80,7 +86,7 @@
           "events": {
             "onhover": {
               "enable": true,
-              "mode": "repulse"
+              "mode": "grab"
             }
           }
         }
