@@ -22,6 +22,7 @@
       justify-content: space-between;
       max-width: 600px; 
       width: 100%;
+      flex-wrap: wrap;
     }
     .button {
       border: none;
@@ -84,7 +85,8 @@
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  width: 45%;
+  width: 100%; /* Rende il pulsante della stessa larghezza del container */
+  margin: 20px auto; /* Centra il pulsante e aggiunge spazio sopra e sotto */
   margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
 }
 
@@ -193,7 +195,11 @@
   <div class="container">
     <button class="button button1" id="button1">Free Money!💶</button>
     <button class="button button2" id="button2">Maze🤤</button>    
-    <button class="language-button"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=" alt="IT"></button>
+  </div>
+  <div class="container">
+    <button class="language-button">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=" alt="IT">
+    </button>
   </div>
   <!-- Il resto del tuo HTML va qui -->
   <script>
