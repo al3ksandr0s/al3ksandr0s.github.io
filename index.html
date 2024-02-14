@@ -198,7 +198,7 @@
   </div>
   <div class="container">
     <button class="language-button">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=" alt="IT">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=" alt="IT" style='height:40px;'>
     </button>
   </div>
   <!-- Il resto del tuo HTML va qui -->
@@ -208,13 +208,13 @@
         "title": "But isn't all white bad?",
         "button1": "Free Money!💶",
         "button2": "Maze🤤",
-        "language": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII="
+        "language": "<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=' alt='IT' style='height:40px;'>"
       },
       "it": {
         "title": "Ma tutto bianco non è brutto?",
         "button1": "Soldi Gratis!💶",
         "button2": "Labirinto🤤",
-        "language": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/280px-Flag_of_the_United_Kingdom_%281-2%29.svg.png"
+        "language": "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/280px-Flag_of_the_United_Kingdom_%281-2%29.svg.png' alt='IT' style='height:50px;'>"
       }
     };
 
@@ -227,7 +227,7 @@
       document.getElementById("title").textContent = translations[currentLanguage].title;
       document.getElementById("button1").textContent = translations[currentLanguage].button1;
       document.getElementById("button2").textContent = translations[currentLanguage].button2;
-      document.querySelector(".language-button img").src = translations[currentLanguage].language;
+      document.querySelector(".language-button").innerHTML = translations[currentLanguage].language;
     });
   </script>
 </body>
