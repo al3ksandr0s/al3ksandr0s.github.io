@@ -71,7 +71,6 @@
       }
     }
 .language-button {
-  position: relative;
   z-index: 1;
   padding: 16px 32px;
   font-size: 16px;
@@ -86,6 +85,7 @@
   text-decoration: none;
   cursor: pointer;
   width: 45%;
+  margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
 }
 
 .language-button img {
@@ -99,8 +99,19 @@
 
 @media (max-width: 1024px) {
   .language-button {
-    width: auto;
-    font-size: 32px;
+    font-size: 24px;
+    padding: 15px 30px;
+    width: 100%; /* Rende il pulsante della stessa larghezza degli altri pulsanti */
+  }
+}
+
+@media (min-width: 769px) {
+  .language-button {
+    font-size: 20px;
+    padding: 12px 24px;
+    width: 45%; /* Rende il pulsante della stessa larghezza degli altri pulsanti */
+    margin-left: auto; /* Centra il pulsante */
+    margin-right: auto;
   }
 }
 </style>
