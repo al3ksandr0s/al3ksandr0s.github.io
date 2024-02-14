@@ -69,37 +69,53 @@
       h1 {
         font-size: 3em;
       }
-    }    
-    .language-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      color: white;
-      background-color: #04AA6D;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
     }
-    .language-button:hover {
-      background-color: #008CBA;
-    }
-    @media (max-width: 768px) {
-      .language-button {
-        font-size: 24px;
-        padding: 15px 30px;
-      }
-    }
+.language-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  color: white;
+  background-color: #04AA6D;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
 
-    @media (min-width: 769px) {
-      .language-button {
-        font-size: 20px;
-        padding: 12px 24px;
-      }
-    }
-  </style>
+.language-button img {
+  width: 100%;
+  height: auto;
+}
+
+.language-button:hover {
+  background-color: #008CBA;
+}
+
+@media (max-width: 768px) {
+  .language-button {
+    font-size: 24px;
+    padding: 15px 30px;
+    position: static;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 769px) {
+  .language-button {
+    font-size: 20px;
+    padding: 12px 24px;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+</style>
 </head>
   <div id="particles-js"></div>
   <button class="language-button"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAAAD1BMVEUAkkbOKzf///+q28Hvub2XxtxnAAAA3UlEQVR4nO3PQQEAIAwAoensn9kS94QGzFT2Rt6pZDc5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTm5OvcBxNrAgcxYPzsAAAAASUVORK5CYII=" alt="IT"></button>
