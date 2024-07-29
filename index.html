@@ -278,41 +278,37 @@ function updateMusicData() {
         document.getElementById('song').textContent = songName;
         document.getElementById('artist').textContent = artistName;
 
-        // Ottieni l'immagine della copertina dell'album
         fetchAlbumCover(artistName, albumName);
     })
     .catch(error => console.log(error));
 }
 
 function fetchAlbumCover(artist, album) {
-    var apiKey = 'YOUR_LAST_FM_API_KEY'; // Sostituisci con la tua chiave API
+    var apiKey = '9da9def7ce67a5252ac34cb518f86a85'; 
     var url = `http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(album)}&format=json`;
 
-    fetch(url)
+    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
         .then(response => response.json())
         .then(data => {
-            var imageUrl = data.album.image[3]['#text']; // Ottieni l'URL dell'immagine di dimensioni extra large
+            var imageUrl = data.album.image[3]['#text']; 
 
-            // Rimuovi l'immagine esistente, se presente
             var existingImage = document.getElementById('album-cover');
             if (existingImage) {
                 existingImage.remove();
             }
 
-            // Crea un elemento img e aggiungilo al div #now-playing
             var img = document.createElement('img');
-            img.id = 'album-cover'; // Aggiungi un id all'immagine per poterla rimuovere facilmente in seguito
-            img.src = imageUrl || 'default-image-url'; // Usa un'immagine predefinita se l'API non restituisce un'immagine
+            img.id = 'album-cover';
+            img.src = imageUrl || 'default-image-url'; 
             img.alt = 'Copertina dell\'album';
-            img.style.width = '200px'; // Imposta la larghezza dell'immagine
-            img.style.height = '200px'; // Imposta l'altezza dell'immagine
+            img.style.width = '200px'; 
+            img.style.height = '200px';
 
             var nowPlayingDiv = document.getElementById('now-playing');
-            nowPlayingDiv.appendChild(img); // Aggiungi l'immagine al div #now-playing
+            nowPlayingDiv.appendChild(img);
         })
         .catch(error => console.log(error));
 }
-// Aggiorna i dati musicali ogni 5 secondi
 setInterval(updateMusicData, 5000);
 </script>
 </body>
