@@ -256,7 +256,7 @@ var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
 var user = 'Peyroc';
 var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
 
-fetch('https://thingproxy.freeboard.io/fetch/' + url)
+fetch('https://corsproxy.io/' + url)
 .then(response => response.json())
 .then(data => {
   var track = data.recenttracks.track[0];
