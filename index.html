@@ -59,26 +59,12 @@
       .container {
     flex-direction: column;
       }
-     
-     #now-playing {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    border: 2px solid #000000; /* Cambia il colore del bordo */
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: default; /* Rimuove l'interazione al passaggio del mouse */
-    margin: 20px auto; /* Centra il contenitore e aggiunge spazio sopra e sotto */
-}
 
-#now-playing:hover {
-    background-color: transparent; /* Non cambia colore al passaggio del mouse */
-}
-
+       #now-playing {
+        display: grid; 
+        width: 100%;
+        text-align: center;
+     }
       @media (max-width: 600px) {
       #now-playing {
       width: 100%; 
@@ -280,7 +266,6 @@
 var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
 var user = 'Peyroc';
 var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
-
 function updateMusicData() {
     fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
     .then(response => response.json())
@@ -288,32 +273,45 @@ function updateMusicData() {
         var track = data.recenttracks.track[0];
         var songName = track.name;
         var artistName = track.artist['#text'];
-        var duration = track.duration; // Ottieni la durata della traccia
+        var albumName = track.album['#text'];
 
         document.getElementById('song').textContent = songName;
         document.getElementById('artist').textContent = artistName;
 
-        // Calcola la durata in minuti e secondi e visualizzala
-        var minutes = Math.floor(duration / 60000);
-        var seconds = ((duration % 60000) / 1000).toFixed(0);
-        document.getElementById('duration').textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-
-        // Avvia l'animazione del progresso
-        var progressBar = document.getElementById('progress-bar');
-        var width = 0;
-        var interval = setInterval(frame, duration / 100); // Aggiorna 100 volte al secondo
-        function frame() {
-            if (width >= 100) {
-                clearInterval(interval);
-            } else {
-                width++;
-                progressBar.style.width = width + '%';
-            }
-        }
+        // Ottieni l'immagine della copertina dell'album
+        fetchAlbumCover(artistName, albumName);
     })
     .catch(error => console.log(error));
 }
 
+function fetchAlbumCover(artist, album) {
+    var apiKey = 'YOUR_LAST_FM_API_KEY'; // Sostituisci con la tua chiave API
+    var url = `http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(album)}&format=json`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            var imageUrl = data.album.image[3]['#text']; // Ottieni l'URL dell'immagine di dimensioni extra large
+
+            // Rimuovi l'immagine esistente, se presente
+            var existingImage = document.getElementById('album-cover');
+            if (existingImage) {
+                existingImage.remove();
+            }
+
+            // Crea un elemento img e aggiungilo al div #now-playing
+            var img = document.createElement('img');
+            img.id = 'album-cover'; // Aggiungi un id all'immagine per poterla rimuovere facilmente in seguito
+            img.src = imageUrl || 'default-image-url'; // Usa un'immagine predefinita se l'API non restituisce un'immagine
+            img.alt = 'Copertina dell\'album';
+            img.style.width = '200px'; // Imposta la larghezza dell'immagine
+            img.style.height = '200px'; // Imposta l'altezza dell'immagine
+
+            var nowPlayingDiv = document.getElementById('now-playing');
+            nowPlayingDiv.appendChild(img); // Aggiungi l'immagine al div #now-playing
+        })
+        .catch(error => console.log(error));
+}
 // Aggiorna i dati musicali ogni 5 secondi
 setInterval(updateMusicData, 5000);
 </script>
