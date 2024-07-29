@@ -262,22 +262,21 @@
         <div id="artist"></div>
     </div>
         <script>
-            var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
-    var user = 'Peyroc';
+var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
+var user = 'Peyroc';
 
-    fetch('http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json')
-    .then(response => response.json())
-    .then(data => {
-      // Ora hai accesso ai dati delle tue canzoni ascoltate di recente
-    var track = data.recenttracks.track[0];
-    var songName = track.name;
-    var artistName = track.artist['#text'];
+fetch('https://cors-anywhere.herokuapp.com/http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json')
+.then(response => response.json())
+.then(data => {
+  //github IA codes like:
+  var track = data.recenttracks.track[0];
+  var songName = track.name;
+  var artistName = track.artist['#text'];
 
-      // Puoi ora visualizzare queste informazioni sul tuo sito web
-      document.getElementById('song').textContent = songName;
-      document.getElementById('artist').textContent = artistName;
-    })
-    .catch(error => console.log(error));
+  document.getElementById('song').textContent = songName;
+  document.getElementById('artist').textContent = artistName;
+})
+.catch(error => console.log(error));
         </script>
 </body>
 </html>
