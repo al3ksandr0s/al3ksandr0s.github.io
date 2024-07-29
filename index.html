@@ -119,6 +119,27 @@
   gtag('js', new Date());
   gtag('config', 'G-G9C337SB2Q');
 </script>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #1DB954;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #song {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        #artist {
+            font-size: 1.5em;
+        }
+    </style>
+    <!-- Includi jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
   <div id="particles-js"></div>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -226,5 +247,26 @@
       document.querySelector(".language-button").innerHTML = translations[currentLanguage].language;
     });
   </script>
+  <div id="now-playing">
+    <div id="song"></div>
+    <div id="artist"></div>
+  </div>
+        <script>
+var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
+var user = 'Peyroc';
+var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
+
+fetch('https://thingproxy.freeboard.io/fetch/' + url)
+.then(response => response.json())
+.then(data => {
+  var track = data.recenttracks.track[0];
+  var songName = track.name;
+  var artistName = track.artist['#text'];
+
+  document.getElementById('song').textContent = songName;
+  document.getElementById('artist').textContent = artistName;
+})
+.catch(error => console.log(error));
+        </script>
 </body>
 </html>
