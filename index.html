@@ -262,21 +262,22 @@
     <div id="artist"></div>
   </div>
         <script>
-        var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
-        var user = 'Peyroc';
+var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
+var user = 'Peyroc';
 
-        fetch('https://cors-anywhere.herokuapp.com/http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json')
-        .then(response => response.json())
-        .then(data => {
-          //github IA codes like:
-          var track = data.recenttracks.track[0];
-          var songName = track.name;
-          var artistName = track.artist['#text'];
+var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
 
-          document.getElementById('song').textContent = songName;
-          document.getElementById('artist').textContent = artistName;
-        })
-        .catch(error => console.log(error));
+var yqlUrl = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from json where url="' + url + '"') + '&format=json&callback=?';
+
+$.getJSON(yqlUrl, function(data) {
+  var track = data.query.results.json.recenttracks.track[0];
+  var songName = track.name;
+  var artistName = track.artist['#text'];
+
+  // La troviamo sta cazzo di libreria?
+  document.getElementById('song').textContent = songName;
+  document.getElementById('artist').textContent = artistName;
+});
         </script>
 </body>
 </html>
