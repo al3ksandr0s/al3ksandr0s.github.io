@@ -137,14 +137,25 @@
         #artist {
             font-size: 1.5em;
         }
-        #music-container {
-            position: absolute;
-            width: 100%;
-            top: calc(100% - 60px);
-        }
     </style>
     <!-- Includi jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+        /* Aggiungi stili per il progresso e la durata */
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #1DB954;
+        }
+        #progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #FFFFFF;
+        }
+        #duration {
+            color: #FFFFFF;
+        }
+    </style>
 </head>
   <div id="particles-js"></div>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -225,16 +236,6 @@
       <img src="download.png" alt="IT" style='height:50px;'>
     </button>
   </div>
-    <div id="music-container">
-        <div id="now-playing">
-            <div id="song"></div>
-            <div id="artist"></div>
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <div id="duration"></div>
-        </div>
-    </div>
   <!-- Il resto del tuo HTML va qui -->
   <script>
     var translations = {
@@ -262,41 +263,54 @@
       document.querySelector(".language-button").innerHTML = translations[currentLanguage].language;
     });
   </script>
-        <script>
-        var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
-        var user = 'Peyroc';
-        var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
+    <div id="now-playing">
+        <div id="song"></div>
+        <div id="artist"></div>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="duration"></div>
+    </div>
+<script>
+var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
+var user = 'Peyroc';
+var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
 
-        fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
-        .then(response => response.json())
-        .then(data => {
-            var track = data.recenttracks.track[0];
-            var songName = track.name;
-            var artistName = track.artist['#text'];
-            var duration = track.duration; // Ottieni la durata della traccia
+function updateMusicData() {
+    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
+    .then(response => response.json())
+    .then(data => {
+        var track = data.recenttracks.track[0];
+        var songName = track.name;
+        var artistName = track.artist['#text'];
+        var duration = track.duration; // Ottieni la durata della traccia
 
-            document.getElementById('song').textContent = songName;
-            document.getElementById('artist').textContent = artistName;
+        document.getElementById('song').textContent = songName;
+        document.getElementById('artist').textContent = artistName;
 
-            // Calcola la durata in minuti e secondi e visualizzala
-            var minutes = Math.floor(duration / 60000);
-            var seconds = ((duration % 60000) / 1000).toFixed(0);
-            document.getElementById('duration').textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+        // Calcola la durata in minuti e secondi e visualizzala
+        var minutes = Math.floor(duration / 60000);
+        var seconds = ((duration % 60000) / 1000).toFixed(0);
+        document.getElementById('duration').textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 
-            // Avvia l'animazione del progresso
-            var progressBar = document.getElementById('progress-bar');
-            var width = 0;
-            var interval = setInterval(frame, duration / 100); // Aggiorna 100 volte al secondo
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(interval);
-                } else {
-                    width++;
-                    progressBar.style.width = width + '%';
-                }
+        // Avvia l'animazione del progresso
+        var progressBar = document.getElementById('progress-bar');
+        var width = 0;
+        var interval = setInterval(frame, duration / 100); // Aggiorna 100 volte al secondo
+        function frame() {
+            if (width >= 100) {
+                clearInterval(interval);
+            } else {
+                width++;
+                progressBar.style.width = width + '%';
             }
-        })
-        .catch(error => console.log(error));
-        </script>
+        }
+    })
+    .catch(error => console.log(error));
+}
+
+// Aggiorna i dati musicali ogni 5 secondi
+setInterval(updateMusicData, 5000);
+</script>
 </body>
 </html>
