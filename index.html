@@ -1,315 +1,365 @@
- <!DOCTYPE html>
-<html>
-<head>
-    <title>Work in progress...</title>
-  <style>
-    body, html {
-      height: 100%; 
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center; 
-      justify-content: center; 
-    }
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-    .container {
-      display: flex;
-      justify-content: space-between;
-      max-width: 600px; 
-      width: 100%;
-      flex-wrap: wrap;
-    }
-    .button {
-      border: none;
-      color: white;
-      padding: 16px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      transition-duration: 0.4s;
-      cursor: pointer;
-      width: 45%;
-    }
-    .button1 {
-      background-color: white; 
-      color: black; 
-      border: 2px solid #04AA6D;
-    }
-    .button1:hover {
-      background-color: #04AA6D;
-      color: white;
-    }
-    .button2 {
-      background-color: white; 
-      color: black; 
-      border: 2px solid #008CBA;
-    }
-    .button2:hover {
-      background-color: #008CBA;
-      color: white;
-    }
-    @media (max-width: 1024px) {
-      .container {
-    flex-direction: column;
-      }
+<!DOCTYPE html>
+<html lang="it">
 
-       #now-playing {
-        display: grid; 
-        width: 100%;
-        text-align: center;
-     }
-      @media (max-width: 600px) {
-      #now-playing {
-      width: 100%; 
-       }
-      }
-      .button {
-        width: auto;
-        font-size: 32px;
-      }
-      h1 {
-        font-size: 3em;
-      }
-    }
-.language-button {
-  z-index: 1;
-  padding: 16px 32px;
-  font-size: 16px;
-  border: 2px solid #FFFF00; /* Bordo giallo */
-  color: white;
-  background-color: white;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  display: inline-block;
-  margin: 4px 2px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  width: 100%; /* Rende il pulsante della stessa larghezza del container */
-  margin: 20px auto; /* Centra il pulsante e aggiunge spazio sopra e sotto */
-  margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
-}
-.language-button img {
-  max-width: 100%;
-  height: auto;
-}
-.language-button:hover {
-  background-color: #FFFF00; /* Sfondo giallo */
-  color: black; /* Testo nero */
-}
-@media (max-width: 1024px) {
-  .language-button {
-    font-size: 24px;
-    padding: 15px 30px;
-    width: 100%; /* Rende il pulsante della stessa larghezza degli altri pulsanti */
-  }
-}
-@media (min-width: 769px) {
-  .language-button {
-    font-size: 20px;
-    padding: 12px 24px;
-    width: 45%; /* Rende il pulsante della stessa larghezza degli altri pulsanti */
-    margin-left: auto; /* Centra il pulsante */
-    margin-right: auto;
-    display: block; /* Posiziona il pulsante sotto gli altri pulsanti */
-  }
-}
-</style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-G9C337SB2Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-G9C337SB2Q');
-</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon">
+    <title>💕 San Valentino 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #FFFFFF;
-            color: #1DB954;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 100vh;
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
         }
-        #song {
-            font-size: 2em;
-            font-weight: bold;
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 25%, #ffe4ec 50%, #ffd6e7 75%, #ffcce0 100%);
+            overflow: hidden;
+            position: relative;
         }
-        #artist {
-            font-size: 1.5em;
+
+        /* Cuori fluttuanti di sfondo */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 8s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container principale */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        /* Titolo */
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #e91e63;
+            text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+            margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #c2185b;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        /* Pulsante Spoiler */
+        .spoiler-btn {
+            position: relative;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 50%, #c2185b 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .spoiler-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .spoiler-btn:hover::before {
+            left: 100%;
+        }
+
+        .spoiler-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(233, 30, 99, 0.5);
+        }
+
+        .spoiler-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .spoiler-btn.hidden {
+            display: none;
+        }
+
+        /* Emoji cuore nel pulsante */
+        .btn-heart {
+            margin-right: 8px;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Container immagine spoiler */
+        .spoiler-image-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: revealImage 0.8s ease-out forwards;
+        }
+
+        .spoiler-image-container.show {
+            display: flex;
+        }
+
+        @keyframes revealImage {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* Immagine */
+        .spoiler-image {
+            width: 320px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 5px solid white;
+            box-shadow: 0 15px 40px rgba(233, 30, 99, 0.3);
+        }
+
+        /* Messaggio sotto l'immagine */
+        .love-message {
+            margin-top: 25px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #e91e63;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pulsante per nascondere */
+        .hide-btn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            font-size: 0.9rem;
+            color: #e91e63;
+            background: white;
+            border: 2px solid #e91e63;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .hide-btn:hover {
+            background: #e91e63;
+            color: white;
+        }
+
+        /* Decorazioni cuori angoli */
+        .corner-decoration {
+            position: fixed;
+            font-size: 3rem;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .top-left { top: 20px; left: 20px; }
+        .top-right { top: 20px; right: 20px; }
+        .bottom-left { bottom: 20px; left: 20px; }
+        .bottom-right { bottom: 20px; right: 20px; }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .spoiler-image {
+                width: 280px;
+                height: 280px;
+            }
+            .spoiler-btn {
+                padding: 15px 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Scrollbar personalizzata */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffeef8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff6b9d, #e91e63);
+            border-radius: 10px;
         }
     </style>
-    <!-- Includi jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-  <div id="particles-js"></div>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
-    /* Funzione per rilevare se l'utente sta utilizzando un dispositivo mobile */
-    function isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-    /* Configurazione delle particelle */
-    var config = {
-      "particles": {
-        "number": {
-          "value": isMobile() ? 60 : 80
-        },
-        "size": {
-          "value": 3
-        },
-        "color": { "value": "#000000" },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#000000",
-          "opacity": 0.4,
-          "width": 1
-        }
-      },
-      "interactivity": {
-        "detect_on": "window",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "connect"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 400,
-            "line_linked": {
-              "opacity": 1
-            }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": isMobile() ? 1 : 2
-          },
-          "remove": {
-            "particles_nb": 2
-          }
-        }
-      },
-      "retina_detect": false
-    };
-    particlesJS('particles-js', config);
-  </script>
+
 <body>
-  <h1 id="title" style="background-color:White;"><center>But isn't all white bad?</center></h1>
-  <div class="container">
-    <button class="button button1" id="button1">Free Money!💶</button>
-    <button class="button button2" id="button2">Maze🤤</button>    
-  </div>
-  <div class="container">
-    <button class="language-button">
-      <img src="download.png" alt="IT" style='height:50px;'>
-    </button>
-  </div>
-  <!-- Il resto del tuo HTML va qui -->
-  <script>
-    var translations = {
-      "en": {
-        "title": "But isn't all white bad?",
-        "button1": "Free Money!💶",
-        "button2": "Maze🤤",
-        "language": "<img src='download.png' alt='IT' style='height:50px;'>"
-      },
-      "it": {
-        "title": "Ma tutto bianco non è brutto?",
-        "button1": "Soldi Gratis!💶",
-        "button2": "Labirinto🤤",
-        "language": "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/280px-Flag_of_the_United_Kingdom_%281-2%29.svg.png' alt='IT' style='height:50px;'>"
-      }
-    };
-    var currentLanguage = "en";
-      document.querySelector(".language-button").addEventListener("click", function() {
-      // Cambia la lingua quando si clicca sul pulsante
-      currentLanguage = currentLanguage === "en" ? "it" : "en";
-      // Aggiorna il testo della pagina con la traduzione corrispondente
-      document.getElementById("title").textContent = translations[currentLanguage].title;
-      document.getElementById("button1").textContent = translations[currentLanguage].button1;
-      document.getElementById("button2").textContent = translations[currentLanguage].button2;
-      document.querySelector(".language-button").innerHTML = translations[currentLanguage].language;
-    });
-  </script>
-  <div id="now-playing">
-    <div id="song"></div>
-    <div id="artist"></div>
-  </div>
-<script>
-var apiKey = '9da9def7ce67a5252ac34cb518f86a85';
-var user = 'Peyroc';
-var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + user + '&api_key=' + apiKey + '&format=json';
-function updateMusicData() {
-    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
-    .then(response => response.json())
-    .then(data => {
-        var track = data.recenttracks.track[0];
-        var songName = track.name;
-        var artistName = track.artist['#text'];
-        var albumName = track.album['#text'];
+    <!-- Cuori fluttuanti di sfondo -->
+    <div class="hearts-bg" id="heartsBg"></div>
 
-        document.getElementById('song').textContent = songName;
-        document.getElementById('artist').textContent = artistName;
+    <!-- Decorazioni angoli -->
+    <div class="corner-decoration top-left">💕</div>
+    <div class="corner-decoration top-right">💕</div>
+    <div class="corner-decoration bottom-left">💕</div>
+    <div class="corner-decoration bottom-right">💕</div>
 
-        fetchAlbumCover(artistName, albumName);
-    })
-    .catch(error => console.log(error));
-}
+    <!-- Container principale -->
+    <div class="container">
+        <h1 class="title">Happy Valentine's Day</h1>
+        <p class="subtitle">✨ Un messaggio speciale per te ✨</p>
 
-function fetchAlbumCover(artist, album) {
-    var apiKey = '9da9def7ce67a5252ac34cb518f86a85'; 
-    var url = `http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(album)}&format=json`;
+        <!-- Pulsante Spoiler -->
+        <button class="spoiler-btn" id="spoilerBtn" onclick="revealSpoiler()">
+            <span class="btn-heart">💖</span> Clicca per scoprire
+        </button>
 
-    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
-        .then(response => response.json())
-        .then(data => {
-            var imageUrl = data.album.image[3]['#text']; 
+        <!-- Container Immagine (nascosto inizialmente) -->
+        <div class="spoiler-image-container" id="spoilerContainer">
+            <!-- ⬇️⬇️⬇️ SOSTITUISCI QUESTA IMMAGINE CON LA TUA ⬇️⬇️⬇️ -->
+            <img 
+                src="/images/ValentinesDay.jpg" 
+                alt="Sorpresa di San Valentino" 
+                class="spoiler-image"
+                id="spoilerImage"
+            >
+            <!-- ⬆️⬆️⬆️ SOSTITUISCI QUESTA IMMAGINE CON LA TUA ⬆️⬆️⬆️ -->
+            
+            <p class="love-message">Ti amo tantissimo! 💝</p>
+            <button class="hide-btn" onclick="hideSpoiler()">Nascondi 💫</button>
+        </div>
+    </div>
 
-            var existingImage = document.getElementById('album-cover');
-            if (existingImage) {
-                existingImage.remove();
+    <script>
+        // Genera cuori fluttuanti
+        function createFloatingHearts() {
+            const container = document.getElementById('heartsBg');
+            const hearts = ['💕', '💖', '💗', '💓', '💘', '💝', '❤️', '🩷'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+                heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                container.appendChild(heart);
             }
+        }
 
-            var img = document.createElement('img');
-            img.id = 'album-cover';
-            img.src = imageUrl || 'default-image-url'; 
-            img.alt = 'Copertina dell\'album';
-            img.style.width = '200px'; 
-            img.style.height = '200px';
+        // Mostra l'immagine spoiler
+        function revealSpoiler() {
+            const btn = document.getElementById('spoilerBtn');
+            const container = document.getElementById('spoilerContainer');
+            
+            btn.classList.add('hidden');
+            container.classList.add('show');
+        }
 
-            var nowPlayingDiv = document.getElementById('now-playing');
-            nowPlayingDiv.appendChild(img);
-        })
-        .catch(error => console.log(error));
-}
-setInterval(updateMusicData, 5000);
-</script>
+        // Nascondi l'immagine spoiler
+        function hideSpoiler() {
+            const btn = document.getElementById('spoilerBtn');
+            const container = document.getElementById('spoilerContainer');
+            
+            container.classList.remove('show');
+            setTimeout(() => {
+                btn.classList.remove('hidden');
+            }, 300);
+        }
+
+        // Inizializza
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingHearts();
+        });
+    </script>
 </body>
+
 </html>
