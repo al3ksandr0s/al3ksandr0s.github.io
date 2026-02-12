@@ -1,88 +1,80 @@
-// Utility functions per il gioco
-
-import type { DecodedChallenge } from './types';
+// Funzioni utility per il Memory Game
 
 /**
- * Generatore pseudo-random con seed (Mulberry32)
+ * Genera un seed casuale
  */
-export function seededRandom(seed: number): () => number {
-    return function(): number {
-        let t = seed += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
+export function generateSeed() {
+    return Math.floor(Math.random() * 100000);
 }
 
 /**
- * Shuffle array con seed deterministico
+ * Generatore di numeri pseudo-casuali con seed
  */
-export function shuffleWithSeed<T>(array: T[], seed: number): T[] {
-    const rng = seededRandom(seed);
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(rng() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
+export function seededRandom(seed) {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
 }
 
 /**
- * Genera un seed casuale a 5 cifre
+ * Shuffle array con seed specifico (per avere sempre lo stesso ordine con lo stesso seed)
  */
-export function generateSeed(): number {
-    return Math.floor(Math.random() * 90000) + 10000;
-}
-
-/**
- * Genera hash semplice per verifica codice
- */
-export function generateHash(seed: number, moves: number, time: number): string {
-    const data = `${seed}${moves}${time}LOVE`;
-    let hash = 0;
-    for (let i = 0; i < data.length; i++) {
-        const char = data.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
+export function shuffleWithSeed(array, seed) {
+    const result = [...array];
+    let currentSeed = seed;
+    
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom(currentSeed) * (i + 1));
+        currentSeed++;
+        [result[i], result[j]] = [result[j], result[i]];
     }
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    const absHash = Math.abs(hash);
-    for (let i = 0; i < 4; i++) {
-        result += chars[(absHash >> (i * 5)) % chars.length];
-    }
+    
     return result;
 }
 
 /**
- * Verifica che l'hash corrisponda ai dati
+ * Genera un hash semplice per verificare l'integrità del codice sfida
  */
-export function verifyHash(hash: string, seed: number, moves: number, time: number): boolean {
-    return generateHash(seed, moves, time) === hash;
+export function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+    return Math.abs(hash).toString(36).substring(0, 4).toUpperCase();
 }
 
 /**
- * Genera il codice sfida completo
+ * Genera un codice sfida che include seed, mosse, tempo e hash di verifica
+ * Formato: HASH-SEED-MOVES-TIME
  */
-export function generateChallengeCode(seed: number, moves: number, time: number): string {
-    const hash = generateHash(seed, moves, time);
+export function generateChallengeCode(seed, moves, time) {
+    const data = `${seed}-${moves}-${time}`;
+    const hash = simpleHash(data);
     return `${hash}-${seed}-${moves}-${time}`;
 }
 
 /**
- * Decodifica e valida un codice sfida
+ * Decodifica un codice sfida e verifica l'integrità
  */
-export function decodeChallengeCode(code: string): DecodedChallenge | null {
-    const parts = code.split('-');
-    if (parts.length !== 4) return null;
-    
-    const [hash, seedStr, movesStr, timeStr] = parts;
-    const seed = parseInt(seedStr);
-    const moves = parseInt(movesStr);
-    const time = parseInt(timeStr);
-    
-    if (isNaN(seed) || isNaN(moves) || isNaN(time)) return null;
-    if (!verifyHash(hash, seed, moves, time)) return null;
-    
-    return { seed, moves, time };
+export function decodeChallengeCode(code) {
+    try {
+        const parts = code.split('-');
+        if (parts.length !== 4) return null;
+        
+        const [hash, seedStr, movesStr, timeStr] = parts;
+        const seed = parseInt(seedStr, 10);
+        const moves = parseInt(movesStr, 10);
+        const time = parseInt(timeStr, 10);
+        
+        if (isNaN(seed) || isNaN(moves) || isNaN(time)) return null;
+        
+        // Verifica hash
+        const expectedHash = simpleHash(`${seed}-${moves}-${time}`);
+        if (hash !== expectedHash) return null;
+        
+        return { seed, moves, time, hash };
+    } catch {
+        return null;
+    }
 }
