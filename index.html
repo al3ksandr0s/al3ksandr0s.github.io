@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💕 San Valentino 💕</title>
+    <title>💕 San Valentino - Brick Breaker 💕</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -162,25 +162,25 @@
             }
         }
 
-        /* Container immagine spoiler */
-        .spoiler-image-container {
+        /* Container gioco */
+        .game-container {
             display: none;
             flex-direction: column;
             align-items: center;
-            animation: revealImage 0.8s ease-out forwards;
+            animation: revealGame 0.8s ease-out forwards;
         }
 
-        .spoiler-image-container.show {
+        .game-container.show {
             display: flex;
         }
 
-        @keyframes revealImage {
+        @keyframes revealGame {
             0% {
                 opacity: 0;
                 transform: scale(0.5) rotate(-10deg);
             }
             50% {
-                transform: scale(1.1) rotate(5deg);
+                transform: scale(1.05) rotate(2deg);
             }
             100% {
                 opacity: 1;
@@ -188,57 +188,130 @@
             }
         }
 
-        /* Immagine */
-        .spoiler-image {
-            width: 320px;
-            height: 320px;
-            object-fit: cover;
-            border-radius: 20px;
-            border: 5px solid white;
-            box-shadow: 0 15px 40px rgba(233, 30, 99, 0.3);
+        /* Header del gioco */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 400px;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
         }
 
-        /* Messaggio sotto l'immagine */
-        .love-message {
-            margin-top: 25px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: 600;
             color: #e91e63;
-            animation: fadeInUp 1s ease-out 0.5s both;
         }
 
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .score-value {
+            font-size: 1.5rem;
+            color: #c2185b;
+            font-weight: 700;
         }
 
-        /* Pulsante per nascondere */
-        .hide-btn {
+        .lives-display {
+            display: flex;
+            gap: 5px;
+            font-size: 1.3rem;
+        }
+
+        /* Canvas del gioco */
+        #gameCanvas {
+            border-radius: 15px;
+            border: 4px solid #e91e63;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
+            background: linear-gradient(180deg, #fff5f8 0%, #ffe8f0 100%);
+        }
+
+        /* Controlli gioco */
+        .game-controls {
             margin-top: 20px;
-            padding: 10px 30px;
-            font-size: 0.9rem;
-            color: #e91e63;
-            background: white;
-            border: 2px solid #e91e63;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .game-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+            border: none;
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
-            animation: fadeInUp 1s ease-out 0.8s both;
         }
 
-        .hide-btn:hover {
+        .game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .game-btn.secondary {
+            background: white;
+            color: #e91e63;
+            border: 2px solid #e91e63;
+        }
+
+        .game-btn.secondary:hover {
             background: #e91e63;
             color: white;
         }
 
-        /* Decorazioni cuori angoli */
+        /* Istruzioni */
+        .game-instructions {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #c2185b;
+            text-align: center;
+        }
+
+        /* Game Over / Win overlay */
+        .game-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .game-overlay.show {
+            display: flex;
+        }
+
+        .overlay-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .overlay-score {
+            font-size: 1.3rem;
+            color: #c2185b;
+            margin-bottom: 20px;
+        }
+
+        /* Canvas wrapper per overlay */
+        .canvas-wrapper {
+            position: relative;
+        }
+
+        /* Decorazioni angoli */
         .corner-decoration {
             position: fixed;
             font-size: 3rem;
@@ -256,9 +329,12 @@
             .title {
                 font-size: 2.5rem;
             }
-            .spoiler-image {
-                width: 280px;
-                height: 280px;
+            .game-header {
+                width: 320px;
+            }
+            #gameCanvas {
+                width: 320px;
+                height: 400px;
             }
             .spoiler-btn {
                 padding: 15px 40px;
@@ -293,30 +369,75 @@
     <!-- Container principale -->
     <div class="container">
         <h1 class="title">Happy Valentine's Day</h1>
-        <p class="subtitle">✨ Un messaggio speciale per te ✨</p>
+        <p class="subtitle">✨ Una sorpresa speciale per te ✨</p>
 
         <!-- Pulsante Spoiler -->
-        <button class="spoiler-btn" id="spoilerBtn" onclick="revealSpoiler()">
-            <span class="btn-heart">💖</span> Clicca per scoprire
+        <button class="spoiler-btn" id="spoilerBtn" onclick="startGame()">
+            <span class="btn-heart">💖</span> Clicca per giocare!
         </button>
 
-        <!-- Container Immagine (nascosto inizialmente) -->
-        <div class="spoiler-image-container" id="spoilerContainer">
-            <!-- ⬇️⬇️⬇️ SOSTITUISCI QUESTA IMMAGINE CON LA TUA ⬇️⬇️⬇️ -->
-            <img 
-                src="/images/ValentinesDay.jpg" 
-                alt="Sorpresa di San Valentino" 
-                class="spoiler-image"
-                id="spoilerImage"
-            >
-            <!-- ⬆️⬆️⬆️ SOSTITUISCI QUESTA IMMAGINE CON LA TUA ⬆️⬆️⬆️ -->
-            
-            <p class="love-message">Ti amo tantissimo piccolina mia 🥹💕</p>
-            <button class="hide-btn" onclick="hideSpoiler()">Nascondi 💫</button>
+        <!-- Container Gioco -->
+        <div class="game-container" id="gameContainer">
+            <div class="game-header">
+                <div class="score-display">
+                    Punteggio: <span class="score-value" id="scoreDisplay">0</span>
+                </div>
+                <div class="lives-display" id="livesDisplay">
+                    💖💖💖
+                </div>
+            </div>
+
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas" width="400" height="500"></canvas>
+                
+                <!-- Overlay Game Over / Win -->
+                <div class="game-overlay" id="gameOverlay">
+                    <div class="overlay-title" id="overlayTitle">Game Over</div>
+                    <div class="overlay-score" id="overlayScore">Punteggio: 0</div>
+                    <button class="game-btn" onclick="restartGame()">🔄 Rigioca</button>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="game-btn" onclick="restartGame()">🔄 Ricomincia</button>
+                <button class="game-btn secondary" onclick="hideGame()">⬅️ Torna indietro</button>
+            </div>
+
+            <p class="game-instructions">
+                🎮 Usa le frecce ← → o muovi il mouse per controllare la barra<br>
+                💕 Distruggi tutti i cuori per vincere!
+            </p>
         </div>
     </div>
 
     <script>
+        // Variabili del gioco
+        let canvas, ctx;
+        let paddleWidth = 80;
+        let paddleHeight = 12;
+        let paddleX;
+        let ballRadius = 8;
+        let ballX, ballY;
+        let ballSpeedX = 4;
+        let ballSpeedY = -4;
+        let score = 0;
+        let lives = 3;
+        let gameRunning = false;
+        let animationId;
+
+        // Blocchi (cuori)
+        const brickRowCount = 5;
+        const brickColumnCount = 7;
+        const brickWidth = 45;
+        const brickHeight = 25;
+        const brickPadding = 8;
+        const brickOffsetTop = 40;
+        const brickOffsetLeft = 25;
+        let bricks = [];
+
+        // Colori dei blocchi (gradiente rosa)
+        const brickColors = ['#ff6b9d', '#e91e63', '#c2185b', '#ad1457', '#880e4f'];
+
         // Genera cuori fluttuanti
         function createFloatingHearts() {
             const container = document.getElementById('heartsBg');
@@ -334,25 +455,288 @@
             }
         }
 
-        // Mostra l'immagine spoiler
-        function revealSpoiler() {
-            const btn = document.getElementById('spoilerBtn');
-            const container = document.getElementById('spoilerContainer');
-            
-            btn.classList.add('hidden');
-            container.classList.add('show');
+        // Inizializza i blocchi
+        function initBricks() {
+            bricks = [];
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) {
+                    bricks[c][r] = { 
+                        x: 0, 
+                        y: 0, 
+                        status: 1,
+                        color: brickColors[r]
+                    };
+                }
+            }
         }
 
-        // Nascondi l'immagine spoiler
-        function hideSpoiler() {
-            const btn = document.getElementById('spoilerBtn');
-            const container = document.getElementById('spoilerContainer');
+        // Inizializza il gioco
+        function initGame() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
             
-            container.classList.remove('show');
+            paddleX = (canvas.width - paddleWidth) / 2;
+            ballX = canvas.width / 2;
+            ballY = canvas.height - 50;
+            ballSpeedX = 4;
+            ballSpeedY = -4;
+            score = 0;
+            lives = 3;
+            
+            initBricks();
+            updateScoreDisplay();
+            updateLivesDisplay();
+            hideOverlay();
+        }
+
+        // Mostra il gioco
+        function startGame() {
+            document.getElementById('spoilerBtn').classList.add('hidden');
+            document.getElementById('gameContainer').classList.add('show');
+            
+            initGame();
+            gameRunning = true;
+            gameLoop();
+        }
+
+        // Nascondi il gioco
+        function hideGame() {
+            gameRunning = false;
+            cancelAnimationFrame(animationId);
+            document.getElementById('gameContainer').classList.remove('show');
             setTimeout(() => {
-                btn.classList.remove('hidden');
+                document.getElementById('spoilerBtn').classList.remove('hidden');
             }, 300);
         }
+
+        // Ricomincia il gioco
+        function restartGame() {
+            cancelAnimationFrame(animationId);
+            initGame();
+            gameRunning = true;
+            gameLoop();
+        }
+
+        // Aggiorna display punteggio
+        function updateScoreDisplay() {
+            document.getElementById('scoreDisplay').textContent = score;
+        }
+
+        // Aggiorna display vite
+        function updateLivesDisplay() {
+            let heartsHTML = '';
+            for (let i = 0; i < 3; i++) {
+                heartsHTML += i < lives ? '💖' : '🖤';
+            }
+            document.getElementById('livesDisplay').innerHTML = heartsHTML;
+        }
+
+        // Mostra overlay
+        function showOverlay(title, finalScore) {
+            document.getElementById('overlayTitle').textContent = title;
+            document.getElementById('overlayScore').textContent = `Punteggio: ${finalScore}`;
+            document.getElementById('gameOverlay').classList.add('show');
+            gameRunning = false;
+        }
+
+        // Nascondi overlay
+        function hideOverlay() {
+            document.getElementById('gameOverlay').classList.remove('show');
+        }
+
+        // Disegna la pallina (cuore)
+        function drawBall() {
+            ctx.font = `${ballRadius * 2}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('💗', ballX, ballY);
+        }
+
+        // Disegna la barra
+        function drawPaddle() {
+            const gradient = ctx.createLinearGradient(paddleX, 0, paddleX + paddleWidth, 0);
+            gradient.addColorStop(0, '#ff6b9d');
+            gradient.addColorStop(0.5, '#e91e63');
+            gradient.addColorStop(1, '#c2185b');
+            
+            ctx.beginPath();
+            ctx.roundRect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight, 6);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Disegna i blocchi (cuori)
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                        bricks[c][r].x = brickX;
+                        bricks[c][r].y = brickY;
+                        
+                        // Disegna blocco con bordo arrotondato
+                        ctx.beginPath();
+                        ctx.roundRect(brickX, brickY, brickWidth, brickHeight, 5);
+                        ctx.fillStyle = bricks[c][r].color;
+                        ctx.fill();
+                        ctx.closePath();
+                        
+                        // Disegna cuoricino sul blocco
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('💕', brickX + brickWidth / 2, brickY + brickHeight / 2);
+                    }
+                }
+            }
+        }
+
+        // Rileva collisioni con i blocchi
+        function collisionDetection() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const brick = bricks[c][r];
+                    if (brick.status === 1) {
+                        if (
+                            ballX > brick.x &&
+                            ballX < brick.x + brickWidth &&
+                            ballY > brick.y &&
+                            ballY < brick.y + brickHeight
+                        ) {
+                            ballSpeedY = -ballSpeedY;
+                            brick.status = 0;
+                            score += 10;
+                            updateScoreDisplay();
+                            
+                            // Controlla vittoria
+                            if (checkWin()) {
+                                showOverlay('🎉 Hai Vinto! 💕', score);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Controlla se ha vinto
+        function checkWin() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Muovi la pallina
+        function moveBall() {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+            
+            // Collisione pareti laterali
+            if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
+                ballSpeedX = -ballSpeedX;
+            }
+            
+            // Collisione parete superiore
+            if (ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;
+            }
+            
+            // Collisione con la barra
+            if (
+                ballY + ballRadius > canvas.height - paddleHeight - 10 &&
+                ballX > paddleX &&
+                ballX < paddleX + paddleWidth
+            ) {
+                // Calcola angolo di rimbalzo basato su dove colpisce la barra
+                const hitPoint = (ballX - paddleX) / paddleWidth;
+                const angle = hitPoint * 120 - 60; // -60 a +60 gradi
+                const speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
+                
+                ballSpeedX = speed * Math.sin(angle * Math.PI / 180);
+                ballSpeedY = -Math.abs(speed * Math.cos(angle * Math.PI / 180));
+            }
+            
+            // Pallina persa
+            if (ballY + ballRadius > canvas.height) {
+                lives--;
+                updateLivesDisplay();
+                
+                if (lives === 0) {
+                    showOverlay('💔 Game Over', score);
+                } else {
+                    // Reset posizione pallina
+                    ballX = canvas.width / 2;
+                    ballY = canvas.height - 50;
+                    ballSpeedX = 4;
+                    ballSpeedY = -4;
+                    paddleX = (canvas.width - paddleWidth) / 2;
+                }
+            }
+        }
+
+        // Loop principale del gioco
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            collisionDetection();
+            moveBall();
+            
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        // Controlli tastiera
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && paddleX > 0) {
+                paddleX -= 30;
+            } else if (e.key === 'ArrowRight' && paddleX < canvas.width - paddleWidth) {
+                paddleX += 30;
+            }
+        });
+
+        // Controllo mouse
+        document.addEventListener('mousemove', (e) => {
+            if (!gameRunning) return;
+            
+            const canvas = document.getElementById('gameCanvas');
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            
+            if (mouseX > 0 && mouseX < canvas.width) {
+                paddleX = mouseX - paddleWidth / 2;
+                
+                // Limiti
+                if (paddleX < 0) paddleX = 0;
+                if (paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
+            }
+        });
+
+        // Controllo touch per mobile
+        document.addEventListener('touchmove', (e) => {
+            if (!gameRunning) return;
+            
+            const canvas = document.getElementById('gameCanvas');
+            const rect = canvas.getBoundingClientRect();
+            const touchX = e.touches[0].clientX - rect.left;
+            
+            if (touchX > 0 && touchX < canvas.width) {
+                paddleX = touchX - paddleWidth / 2;
+                
+                if (paddleX < 0) paddleX = 0;
+                if (paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
+            }
+        });
 
         // Inizializza
         document.addEventListener('DOMContentLoaded', function() {
