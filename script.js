@@ -8,29 +8,74 @@ import { startChallenge, joinChallenge, startDuel } from './src/game.js';
  */
 function initEventListeners() {
     // Menu principale
-    document.getElementById('challengeModeBtn')?.addEventListener('click', () => showScreen('challengeMenu'));
-    document.getElementById('duelModeBtn')?.addEventListener('click', () => showScreen('duelSetup'));
+    var challengeModeBtn = document.getElementById('challengeModeBtn');
+    var duelModeBtn = document.getElementById('duelModeBtn');
+    
+    if (challengeModeBtn) {
+        challengeModeBtn.addEventListener('click', function() { showScreen('challengeMenu'); });
+    }
+    if (duelModeBtn) {
+        duelModeBtn.addEventListener('click', function() { showScreen('duelSetup'); });
+    }
     
     // Challenge menu
-    document.getElementById('createChallengeBtn')?.addEventListener('click', startChallenge);
-    document.getElementById('joinChallengeBtn')?.addEventListener('click', () => showScreen('enterCode'));
-    document.getElementById('backToMenuBtn1')?.addEventListener('click', () => showScreen('menuScreen'));
+    var createChallengeBtn = document.getElementById('createChallengeBtn');
+    var joinChallengeBtn = document.getElementById('joinChallengeBtn');
+    var backToMenuBtn1 = document.getElementById('backToMenuBtn1');
+    
+    if (createChallengeBtn) {
+        createChallengeBtn.addEventListener('click', startChallenge);
+    }
+    if (joinChallengeBtn) {
+        joinChallengeBtn.addEventListener('click', function() { showScreen('enterCode'); });
+    }
+    if (backToMenuBtn1) {
+        backToMenuBtn1.addEventListener('click', function() { showScreen('menuScreen'); });
+    }
     
     // Enter code screen
-    document.getElementById('startChallengeBtn')?.addEventListener('click', joinChallenge);
-    document.getElementById('backToChallengeMenuBtn')?.addEventListener('click', () => showScreen('challengeMenu'));
+    var startChallengeBtn = document.getElementById('startChallengeBtn');
+    var backToChallengeMenuBtn = document.getElementById('backToChallengeMenuBtn');
+    
+    if (startChallengeBtn) {
+        startChallengeBtn.addEventListener('click', joinChallenge);
+    }
+    if (backToChallengeMenuBtn) {
+        backToChallengeMenuBtn.addEventListener('click', function() { showScreen('challengeMenu'); });
+    }
     
     // Duel setup
-    document.getElementById('startDuelBtn')?.addEventListener('click', startDuel);
-    document.getElementById('backToMenuBtn2')?.addEventListener('click', () => showScreen('menuScreen'));
+    var startDuelBtn = document.getElementById('startDuelBtn');
+    var backToMenuBtn2 = document.getElementById('backToMenuBtn2');
+    
+    if (startDuelBtn) {
+        startDuelBtn.addEventListener('click', startDuel);
+    }
+    if (backToMenuBtn2) {
+        backToMenuBtn2.addEventListener('click', function() { showScreen('menuScreen'); });
+    }
     
     // Challenge result
-    document.getElementById('copyCodeBtn')?.addEventListener('click', copyCodeToClipboard);
-    document.getElementById('backToMenuBtn3')?.addEventListener('click', () => showScreen('menuScreen'));
+    var copyCodeBtn = document.getElementById('copyCodeBtn');
+    var backToMenuBtn3 = document.getElementById('backToMenuBtn3');
+    
+    if (copyCodeBtn) {
+        copyCodeBtn.addEventListener('click', copyCodeToClipboard);
+    }
+    if (backToMenuBtn3) {
+        backToMenuBtn3.addEventListener('click', function() { showScreen('menuScreen'); });
+    }
     
     // Duel result
-    document.getElementById('rematchBtn')?.addEventListener('click', startDuel);
-    document.getElementById('backToMenuBtn4')?.addEventListener('click', () => showScreen('menuScreen'));
+    var rematchBtn = document.getElementById('rematchBtn');
+    var backToMenuBtn4 = document.getElementById('backToMenuBtn4');
+    
+    if (rematchBtn) {
+        rematchBtn.addEventListener('click', startDuel);
+    }
+    if (backToMenuBtn4) {
+        backToMenuBtn4.addEventListener('click', function() { showScreen('menuScreen'); });
+    }
 }
 
 /**
