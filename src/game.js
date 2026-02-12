@@ -1,24 +1,22 @@
 // Logica principale del gioco Memory
 
-import type { GameMode, GameState, DuelState, DecodedChallenge } from './types';
-import { generateSeed, generateChallengeCode, decodeChallengeCode } from './utils';
-import { createCards, flipCard, unflipCard, markAsMatched, isCardPlayable, getCardSymbol } from './cards';
+import { generateSeed, generateChallengeCode, decodeChallengeCode } from './utils.js';
+import { createCards, flipCard, unflipCard, markAsMatched, isCardPlayable, getCardSymbol } from './cards.js';
 import { 
     showScreen, 
     updateChallengeStats, 
     updateDuelStats,
     showChallengeResult,
-    showDuelTransition,
     showDuelResult,
     setupPlayer1Turn,
     setupPlayer2Turn,
     showCodeError,
     hideCodeError,
     updateTurnIndicator
-} from './ui';
+} from './ui.js';
 
 // Stato del gioco
-let gameState: GameState = {
+var gameState = {
     mode: '',
     seed: 0,
     moves: 0,
@@ -30,7 +28,7 @@ let gameState: GameState = {
 };
 
 // Stato del duel
-let duelState: DuelState = {
+var duelState = {
     currentPlayer: 1,
     player1Moves: 0,
     player2Moves: 0,
@@ -38,12 +36,12 @@ let duelState: DuelState = {
 };
 
 // Dati sfida (per modalità challenge-join)
-let challengeData: DecodedChallenge | null = null;
+var challengeData = null;
 
 /**
  * Resetta lo stato del gioco
  */
-function resetGameState(): void {
+function resetGameState() {
     gameState.moves = 0;
     gameState.time = 0;
     gameState.matchedPairs = 0;
@@ -55,10 +53,10 @@ function resetGameState(): void {
 /**
  * Avvia il timer
  */
-function startTimer(): void {
+function startTimer() {
     gameState.time = 0;
     stopTimer();
-    gameState.timerInterval = window.setInterval(() => {
+    gameState.timerInterval = window.setInterval(function() {
         gameState.time++;
         if (gameState.mode === 'challenge' || gameState.mode === 'challenge-join') {
             updateChallengeStats(gameState.moves, gameState.time, gameState.matchedPairs);
@@ -69,7 +67,7 @@ function startTimer(): void {
 /**
  * Ferma il timer
  */
-function stopTimer(): void {
+function stopTimer() {
     if (gameState.timerInterval !== null) {
         clearInterval(gameState.timerInterval);
         gameState.timerInterval = null;
@@ -79,7 +77,7 @@ function stopTimer(): void {
 /**
  * Aggiorna le statistiche nella UI
  */
-function updateStats(): void {
+function updateStats() {
     if (gameState.mode === 'challenge' || gameState.mode === 'challenge-join') {
         updateChallengeStats(gameState.moves, gameState.time, gameState.matchedPairs);
     } else if (gameState.mode === 'duel') {
@@ -90,7 +88,7 @@ function updateStats(): void {
 /**
  * Cambia turno nel duel
  */
-function switchTurn(): void {
+function switchTurn() {
     if (duelState.currentPlayer === 1) {
         duelState.currentPlayer = 2;
         setupPlayer2Turn();
@@ -105,7 +103,7 @@ function switchTurn(): void {
 /**
  * Handler per il click su una carta
  */
-function handleCardClick(card: HTMLElement): void {
+function handleCardClick(card) {
     if (!gameState.canFlip || !isCardPlayable(card)) {
         return;
     }
@@ -129,11 +127,12 @@ function handleCardClick(card: HTMLElement): void {
         
         updateStats();
 
-        const [card1, card2] = gameState.flippedCards;
+        var card1 = gameState.flippedCards[0];
+        var card2 = gameState.flippedCards[1];
         
         if (getCardSymbol(card1) === getCardSymbol(card2)) {
             // Match trovato!
-            setTimeout(() => {
+            setTimeout(function() {
                 markAsMatched(card1);
                 markAsMatched(card2);
                 gameState.matchedPairs++;
@@ -148,7 +147,7 @@ function handleCardClick(card: HTMLElement): void {
             }, 500);
         } else {
             // Nessun match
-            setTimeout(() => {
+            setTimeout(function() {
                 unflipCard(card1);
                 unflipCard(card2);
                 gameState.flippedCards = [];
@@ -166,12 +165,12 @@ function handleCardClick(card: HTMLElement): void {
 /**
  * Fine del gioco
  */
-function endGame(): void {
+function endGame() {
     stopTimer();
     
     if (gameState.mode === 'challenge') {
         // Genera codice sfida
-        const code = generateChallengeCode(gameState.seed, gameState.moves, gameState.time);
+        var code = generateChallengeCode(gameState.seed, gameState.moves, gameState.time);
         showChallengeResult(gameState.moves, gameState.time, code, null);
         
     } else if (gameState.mode === 'challenge-join' && challengeData) {
@@ -190,7 +189,7 @@ function endGame(): void {
 /**
  * Avvia una nuova sfida (modalità Challenge)
  */
-export function startChallenge(): void {
+export function startChallenge() {
     gameState.mode = 'challenge';
     gameState.seed = generateSeed();
     resetGameState();
@@ -203,11 +202,11 @@ export function startChallenge(): void {
 /**
  * Partecipa a una sfida esistente
  */
-export function joinChallenge(): void {
-    const input = document.getElementById('challengeCodeInput') as HTMLInputElement;
-    const code = input?.value.trim().toUpperCase() || '';
+export function joinChallenge() {
+    var input = document.getElementById('challengeCodeInput');
+    var code = input ? input.value.trim().toUpperCase() : '';
     
-    const decoded = decodeChallengeCode(code);
+    var decoded = decodeChallengeCode(code);
     
     if (!decoded) {
         showCodeError('❌ Codice non valido. Controlla e riprova.');
@@ -230,7 +229,7 @@ export function joinChallenge(): void {
 /**
  * Avvia un duel locale
  */
-export function startDuel(): void {
+export function startDuel() {
     gameState.mode = 'duel';
     duelState.currentPlayer = 1;
     duelState.player1Moves = 0;
@@ -243,12 +242,4 @@ export function startDuel(): void {
     updateTurnIndicator(1);
     updateStats();
     showScreen('duelGame');
-}
-
-/**
- * Avvia il turno del giocatore 2 (per transizione)
- */
-export function startPlayer2Turn(): void {
-    // Questa funzione non è più necessaria per il duel a turni alternati
-    // ma la manteniamo per compatibilità
 }
