@@ -49,10 +49,9 @@ export function simpleHash(str) {
  * Formato: HASH-SEED-MOVES-TIME
  */
 export function generateChallengeCode(seed, moves, time) {
-    const timestamp = Date.now(); // Prende l'ora esatta di creazione
-    const data = `${seed}-${moves}-${time}-${timestamp}`;
+    const data = `${seed}-${moves}-${time}`;
     const hash = simpleHash(data);
-    return `${hash}-${seed}-${moves}-${time}-${timestamp}`;
+    return `${hash}-${seed}-${moves}-${time}`;
 }
 
 /**
@@ -61,28 +60,20 @@ export function generateChallengeCode(seed, moves, time) {
 export function decodeChallengeCode(code) {
     try {
         const parts = code.split('-');
-        if (parts.length !== 5) return null; // Ora le parti sono 5
+        if (parts.length !== 4) return null;
         
-        const [hash, seedStr, movesStr, timeStr, timestampStr] = parts;
+        const [hash, seedStr, movesStr, timeStr] = parts;
         const seed = parseInt(seedStr, 10);
         const moves = parseInt(movesStr, 10);
         const time = parseInt(timeStr, 10);
-        const timestamp = parseInt(timestampStr, 10);
         
-        if (isNaN(seed) || isNaN(moves) || isNaN(time) || isNaN(timestamp)) return null;
+        if (isNaN(seed) || isNaN(moves) || isNaN(time)) return null;
         
-        // 1. Verifica integrità (Hash)
-        const expectedHash = simpleHash(`${seed}-${moves}-${time}-${timestamp}`);
+        // Verifica hash
+        const expectedHash = simpleHash(`${seed}-${moves}-${time}`);
         if (hash !== expectedHash) return null;
         
-        // 2. Verifica Scadenza (10 minuti = 600.000 millisecondi)
-        const now = Date.now();
-        const expirationTime = 10 * 60 * 1000; 
-        if (now - timestamp > expirationTime) {
-            return { error: 'EXPIRED' };
-        }
-        
-        return { seed, moves, time, hash, timestamp };
+        return { seed, moves, time, hash };
     } catch {
         return null;
     }
