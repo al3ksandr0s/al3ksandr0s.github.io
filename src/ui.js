@@ -3,7 +3,7 @@
 /**
  * Mostra una schermata specifica nascondendo le altre
  */
-export function showScreen(screenId: string): void {
+export function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const screen = document.getElementById(screenId);
     if (screen) {
@@ -14,7 +14,7 @@ export function showScreen(screenId: string): void {
 /**
  * Crea elementi decorativi nello sfondo
  */
-export function createFloatingHearts(): void {
+export function createFloatingHearts() {
     const container = document.getElementById('heartsBg');
     if (!container) return;
     
@@ -35,33 +35,33 @@ export function createFloatingHearts(): void {
 /**
  * Aggiorna le statistiche di gioco nella UI
  */
-export function updateChallengeStats(moves: number, time: number, matchedPairs: number): void {
+export function updateChallengeStats(moves, time, matchedPairs) {
     const movesEl = document.getElementById('movesCount');
     const timeEl = document.getElementById('timeCount');
     const pairsEl = document.getElementById('pairsCount');
     
     if (movesEl) movesEl.textContent = moves.toString();
     if (timeEl) timeEl.textContent = time + 's';
-    if (pairsEl) pairsEl.textContent = `${matchedPairs}/8`;
+    if (pairsEl) pairsEl.textContent = matchedPairs + '/8';
 }
 
 /**
  * Aggiorna le statistiche del duel nella UI
  */
-export function updateDuelStats(currentPlayer: 1 | 2, player1Moves: number, player2Moves: number, matchedPairs: number): void {
+export function updateDuelStats(currentPlayer, player1Moves, player2Moves, matchedPairs) {
     const player1MovesEl = document.getElementById('player1Moves');
     const player2MovesEl = document.getElementById('player2Moves');
     const pairsEl = document.getElementById('duelPairsCount');
     
     if (player1MovesEl) player1MovesEl.textContent = player1Moves.toString();
     if (player2MovesEl) player2MovesEl.textContent = player2Moves.toString();
-    if (pairsEl) pairsEl.textContent = `${matchedPairs}/8`;
+    if (pairsEl) pairsEl.textContent = matchedPairs + '/8';
 }
 
 /**
  * Aggiorna l'indicatore del turno
  */
-export function updateTurnIndicator(currentPlayer: 1 | 2): void {
+export function updateTurnIndicator(currentPlayer) {
     const indicator = document.getElementById('turnIndicator');
     if (indicator) {
         if (currentPlayer === 1) {
@@ -77,12 +77,7 @@ export function updateTurnIndicator(currentPlayer: 1 | 2): void {
 /**
  * Mostra il risultato della sfida
  */
-export function showChallengeResult(
-    moves: number, 
-    time: number, 
-    code: string | null, 
-    comparison: { challengerMoves: number; challengerTime: number } | null
-): void {
+export function showChallengeResult(moves, time, code, comparison) {
     const resultTitle = document.getElementById('resultTitle');
     const finalMoves = document.getElementById('finalMoves');
     const finalTime = document.getElementById('finalTime');
@@ -107,16 +102,16 @@ export function showChallengeResult(
         
         let comparisonText = '';
         if (moves < comparison.challengerMoves) {
-            comparisonText = `🏆 HAI VINTO! Hai fatto ${comparison.challengerMoves - moves} mosse in meno del tuo amico!`;
+            comparisonText = '🏆 HAI VINTO! Hai fatto ' + (comparison.challengerMoves - moves) + ' mosse in meno del tuo amico!';
             if (resultTitle) resultTitle.textContent = '🏆 Vittoria!';
         } else if (moves > comparison.challengerMoves) {
-            comparisonText = `😢 Hai perso! Il tuo amico ha fatto ${moves - comparison.challengerMoves} mosse in meno.`;
+            comparisonText = '😢 Hai perso! Il tuo amico ha fatto ' + (moves - comparison.challengerMoves) + ' mosse in meno.';
             if (resultTitle) resultTitle.textContent = '💔 Sconfitta';
         } else {
-            comparisonText = `🤝 Pareggio! Entrambi avete fatto ${moves} mosse!`;
+            comparisonText = '🤝 Pareggio! Entrambi avete fatto ' + moves + ' mosse!';
             if (resultTitle) resultTitle.textContent = '🤝 Pareggio!';
         }
-        comparisonText += `<br><br>Tu: ${moves} mosse in ${time}s<br>Amico: ${comparison.challengerMoves} mosse in ${comparison.challengerTime}s`;
+        comparisonText += '<br><br>Tu: ' + moves + ' mosse in ' + time + 's<br>Amico: ' + comparison.challengerMoves + ' mosse in ' + comparison.challengerTime + 's';
         
         comparisonResult.innerHTML = comparisonText;
     }
@@ -127,7 +122,7 @@ export function showChallengeResult(
 /**
  * Mostra la schermata di transizione del duel (non più usata)
  */
-export function showDuelTransition(player1Moves: number): void {
+export function showDuelTransition(player1Moves) {
     const p1TransitionMoves = document.getElementById('p1TransitionMoves');
     if (p1TransitionMoves) {
         p1TransitionMoves.textContent = player1Moves.toString();
@@ -138,7 +133,7 @@ export function showDuelTransition(player1Moves: number): void {
 /**
  * Mostra il risultato finale del duel
  */
-export function showDuelResult(player1Moves: number, player2Moves: number): void {
+export function showDuelResult(player1Moves, player2Moves) {
     const p1FinalMoves = document.getElementById('p1FinalMoves');
     const p2FinalMoves = document.getElementById('p2FinalMoves');
     const duelResultTitle = document.getElementById('duelResultTitle');
@@ -150,20 +145,20 @@ export function showDuelResult(player1Moves: number, player2Moves: number): void
     if (p1FinalMoves) p1FinalMoves.textContent = player1Moves.toString();
     if (p2FinalMoves) p2FinalMoves.textContent = player2Moves.toString();
     
-    p1Result?.classList.remove('winner');
-    p2Result?.classList.remove('winner');
+    if (p1Result) p1Result.classList.remove('winner');
+    if (p2Result) p2Result.classList.remove('winner');
     
     // Chi ha fatto MENO mosse vince
     if (player1Moves < player2Moves) {
         if (duelResultTitle) duelResultTitle.textContent = '🏆 Giocatore 1 Vince!';
         if (p1Badge) p1Badge.textContent = '🏆';
         if (p2Badge) p2Badge.textContent = '';
-        p1Result?.classList.add('winner');
+        if (p1Result) p1Result.classList.add('winner');
     } else if (player2Moves < player1Moves) {
         if (duelResultTitle) duelResultTitle.textContent = '🏆 Giocatore 2 Vince!';
         if (p1Badge) p1Badge.textContent = '';
         if (p2Badge) p2Badge.textContent = '🏆';
-        p2Result?.classList.add('winner');
+        if (p2Result) p2Result.classList.add('winner');
     } else {
         if (duelResultTitle) duelResultTitle.textContent = '🤝 Pareggio!';
         if (p1Badge) p1Badge.textContent = '🤝';
@@ -176,29 +171,29 @@ export function showDuelResult(player1Moves: number, player2Moves: number): void
 /**
  * Prepara la UI per il turno del giocatore 2
  */
-export function setupPlayer2Turn(): void {
+export function setupPlayer2Turn() {
     const player1Stat = document.getElementById('player1Stat');
     const player2Stat = document.getElementById('player2Stat');
     
-    player1Stat?.classList.remove('active');
-    player2Stat?.classList.add('active');
+    if (player1Stat) player1Stat.classList.remove('active');
+    if (player2Stat) player2Stat.classList.add('active');
 }
 
 /**
  * Prepara la UI per il turno del giocatore 1
  */
-export function setupPlayer1Turn(): void {
+export function setupPlayer1Turn() {
     const player1Stat = document.getElementById('player1Stat');
     const player2Stat = document.getElementById('player2Stat');
     
-    player1Stat?.classList.add('active');
-    player2Stat?.classList.remove('active');
+    if (player1Stat) player1Stat.classList.add('active');
+    if (player2Stat) player2Stat.classList.remove('active');
 }
 
 /**
  * Mostra un errore nel campo codice
  */
-export function showCodeError(message: string): void {
+export function showCodeError(message) {
     const errorEl = document.getElementById('codeError');
     if (errorEl) {
         errorEl.textContent = message;
@@ -209,7 +204,7 @@ export function showCodeError(message: string): void {
 /**
  * Nasconde l'errore del campo codice
  */
-export function hideCodeError(): void {
+export function hideCodeError() {
     const errorEl = document.getElementById('codeError');
     if (errorEl) {
         errorEl.classList.remove('visible');
@@ -219,7 +214,7 @@ export function hideCodeError(): void {
 /**
  * Copia il codice negli appunti
  */
-export async function copyCodeToClipboard(): Promise<void> {
+export async function copyCodeToClipboard() {
     const codeDisplay = document.getElementById('codeDisplay');
     const copyBtn = document.getElementById('copyCodeBtn');
     
@@ -227,10 +222,10 @@ export async function copyCodeToClipboard(): Promise<void> {
         try {
             await navigator.clipboard.writeText(codeDisplay.textContent || '');
             copyBtn.textContent = '✅ Copiato!';
-            setTimeout(() => {
+            setTimeout(function() {
                 copyBtn.textContent = '📋 Copia Codice';
             }, 2000);
-        } catch {
+        } catch (e) {
             console.error('Failed to copy code');
         }
     }
