@@ -206,14 +206,32 @@ export function joinChallenge() {
     var input = document.getElementById('challengeCodeInput');
     var code = input ? input.value.trim().toUpperCase() : '';
     
-    var decoded = decodeChallengeCode(code);
-    
-    if (!decoded) {
-        showCodeError('❌ Codice non valido. Controlla e riprova.');
+    // --- CONTROLLO 1: Già usato su questo browser ---
+    const usedCodes = JSON.parse(localStorage.getItem('usedChallengeCodes') || '[]');
+    if (usedCodes.includes(code)) {
+        showCodeError('❌ Hai già utilizzato questo codice sfida.');
         return;
     }
     
+    var decoded = decodeChallengeCode(code);
+    
+    // --- CONTROLLO 2: Errori di validità o scadenza ---
+    if (!decoded) {
+        showCodeError('❌ Codice non valido.');
+        return;
+    }
+    
+    if (decoded.error === 'EXPIRED') {
+        showCodeError('⏰ Sfida scaduta! I codici valgono solo 10 minuti.');
+        return;
+    }
+    
+    // Se tutto è OK, procediamo
     hideCodeError();
+    
+    // --- SALVATAGGIO: Segna come usato ---
+    usedCodes.push(code);
+    localStorage.setItem('usedChallengeCodes', JSON.stringify(usedCodes));
     
     gameState.mode = 'challenge-join';
     gameState.seed = decoded.seed;
