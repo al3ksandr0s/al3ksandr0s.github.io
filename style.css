@@ -1,14 +1,581 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Sfondo decorativo */
+.hearts-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.floating-heart {
+    position: absolute;
+    animation: floatUp 10s ease-in-out infinite;
+    opacity: 0.3;
+    font-size: 20px;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Container principale */
+.container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-h1 {
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: #e94560;
+    text-shadow: 2px 2px 8px rgba(233, 69, 96, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #a0a0a0;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+/* Schermate */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulsanti */
+.btn {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #e94560 0%, #c23a51 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    margin: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(233, 69, 96, 0.5);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: #e94560;
+    border: 2px solid #e94560;
+}
+
+.btn.secondary:hover {
+    background: #e94560;
+    color: white;
+}
+
+.btn.small {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+}
+
+/* Menu principale */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(233, 69, 96, 0.2);
+}
+
+.mode-card:hover {
+    transform: translateY(-5px);
+    border-color: #e94560;
+    box-shadow: 0 12px 40px rgba(233, 69, 96, 0.3);
+}
+
+.mode-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.mode-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #e94560;
+    margin-bottom: 8px;
+}
+
+.mode-desc {
+    font-size: 0.95rem;
+    color: #a0a0a0;
+}
+
+/* Input code */
+.code-input-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 350px;
+}
+
+.code-input {
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 1.3rem;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    border: 3px solid rgba(233, 69, 96, 0.3);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    letter-spacing: 4px;
+    transition: border-color 0.3s;
+}
+
+.code-input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.code-input::placeholder {
+    color: #666;
+    letter-spacing: 2px;
+}
+
+/* Game Stats */
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e94560;
+}
+
+/* Duel Stats */
+.duel-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.player-stat {
+    text-align: center;
+    padding: 12px 25px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.player-stat.active {
+    background: rgba(233, 69, 96, 0.2);
+    border: 2px solid #e94560;
+}
+
+.player-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ccc;
+}
+
+.player-score {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e94560;
+}
+
+/* Griglia carte - PIÙ DISTANZIATE */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 520px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+/* Carta - PIÙ GRANDE */
+.card {
+    aspect-ratio: 3/4;
+    perspective: 1000px;
+    cursor: pointer;
+    min-height: 100px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card.matched .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card.matched {
+    pointer-events: none;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-front {
+    background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+    border: 3px solid #3a3a5a;
+    color: #e94560;
+    font-size: 2rem;
+}
+
+.card-front::before {
+    content: '🂠';
+    font-size: 3rem;
+}
+
+.card-back {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    transform: rotateY(180deg);
+    border: 3px solid #ddd;
     color: #333;
-} 
+}
+
+.card.matched .card-back {
+    background: linear-gradient(145deg, #d4edda, #c3e6cb);
+    border-color: #28a745;
+}
+
+/* Challenge Code Display */
+.challenge-code {
+    background: rgba(255, 255, 255, 0.05);
+    border: 3px dashed #e94560;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin: 20px 0;
+    display: none;
+}
+
+.challenge-code.visible {
+    display: block;
+}
+
+.code-label {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    margin-bottom: 12px;
+}
+
+.code-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #e94560;
+    letter-spacing: 3px;
+    background: rgba(233, 69, 96, 0.1);
+    padding: 12px 24px;
+    border-radius: 10px;
+    display: inline-block;
+    user-select: all;
+}
+
+.copy-btn {
+    margin-top: 15px;
+}
+
+/* Results */
+.results-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    border: 2px solid rgba(233, 69, 96, 0.2);
+}
+
+.results-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #e94560;
+    margin-bottom: 25px;
+}
+
+.results-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 25px;
+}
+
+.result-item {
+    text-align: center;
+}
+
+.result-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #e94560;
+}
+
+.result-label {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}
+
+/* Duel Results */
+.duel-results {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.duel-player-result {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px 35px;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.duel-player-result.winner {
+    background: rgba(40, 167, 69, 0.15);
+    border: 3px solid #28a745;
+}
+
+.winner-badge {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+/* Turn indicator */
+.turn-indicator {
+    background: linear-gradient(135deg, #e94560, #c23a51);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(233, 69, 96, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(233, 69, 96, 0.8); }
+}
+
+/* Info box */
+.info-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 18px 25px;
+    margin: 15px 0;
+    font-size: 0.95rem;
+    color: #a0a0a0;
+    text-align: center;
+    border-left: 4px solid #e94560;
+}
+
+/* Error message */
+.error-message {
+    color: #e94560;
+    margin-top: 10px;
+    display: none;
+}
+
+.error-message.visible {
+    display: block;
+}
+
+/* Challenge comparison */
+#challengeComparison {
+    display: none;
+}
+
+#challengeComparison.visible {
+    display: block;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #1a1a2e; }
+::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #e94560, #c23a51); border-radius: 10px; }
+
+/* Responsive - MOBILE */
+@media (max-width: 600px) {
+    .title { font-size: 2rem; }
+    .cards-grid { 
+        max-width: 100%; 
+        gap: 12px;
+        padding: 5px;
+    }
+    .card {
+        min-height: 80px;
+    }
+    .card-face { 
+        font-size: 1.8rem; 
+        border-radius: 10px;
+    }
+    .card-front::before {
+        font-size: 2.2rem;
+    }
+    .game-stats { 
+        flex-wrap: wrap; 
+        gap: 15px;
+        padding: 12px 15px;
+    }
+    .stat { flex: 1 1 30%; }
+    .duel-stats {
+        flex-direction: row;
+        gap: 10px;
+    }
+    .player-stat {
+        padding: 10px 15px;
+    }
+    .mode-card {
+        padding: 20px;
+    }
+    .mode-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Responsive - TABLET */
+@media (min-width: 601px) and (max-width: 900px) {
+    .cards-grid {
+        max-width: 450px;
+        gap: 14px;
+    }
+    .card {
+        min-height: 90px;
+    }
+}
+
+/* Responsive - DESKTOP */
+@media (min-width: 901px) {
+    .cards-grid {
+        max-width: 520px;
+        gap: 18px;
+    }
+    .card {
+        min-height: 110px;
+    }
+    .card-face {
+        font-size: 3rem;
+    }
+    .card-front::before {
+        font-size: 3.5rem;
+    }
+}
