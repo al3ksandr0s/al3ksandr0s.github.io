@@ -4,745 +4,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💕 San Valentino - Brick Breaker 💕</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 25%, #ffe4ec 50%, #ffd6e7 75%, #ffcce0 100%);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Cuori fluttuanti di sfondo */
-        .hearts-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .floating-heart {
-            position: absolute;
-            font-size: 20px;
-            animation: floatUp 8s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Container principale */
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 20px;
-        }
-
-        /* Titolo */
-        .title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: #e91e63;
-            text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
-            margin-bottom: 10px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #c2185b;
-            margin-bottom: 40px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.03);
-            }
-        }
-
-        /* Pulsante Spoiler */
-        .spoiler-btn {
-            position: relative;
-            padding: 18px 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
-            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 50%, #c2185b 100%);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        .spoiler-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .spoiler-btn:hover::before {
-            left: 100%;
-        }
-
-        .spoiler-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 35px rgba(233, 30, 99, 0.5);
-        }
-
-        .spoiler-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .spoiler-btn.hidden {
-            display: none;
-        }
-
-        /* Emoji cuore nel pulsante */
-        .btn-heart {
-            margin-right: 8px;
-            animation: heartbeat 1s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            25% {
-                transform: scale(1.2);
-            }
-            50% {
-                transform: scale(1);
-            }
-            75% {
-                transform: scale(1.2);
-            }
-        }
-
-        /* Container gioco */
-        .game-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            animation: revealGame 0.8s ease-out forwards;
-        }
-
-        .game-container.show {
-            display: flex;
-        }
-
-        @keyframes revealGame {
-            0% {
-                opacity: 0;
-                transform: scale(0.5) rotate(-10deg);
-            }
-            50% {
-                transform: scale(1.05) rotate(2deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        /* Header del gioco */
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 400px;
-            margin-bottom: 15px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
-        }
-
-        .score-display {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #e91e63;
-        }
-
-        .score-value {
-            font-size: 1.5rem;
-            color: #c2185b;
-            font-weight: 700;
-        }
-
-        .lives-display {
-            display: flex;
-            gap: 5px;
-            font-size: 1.3rem;
-        }
-
-        /* Canvas del gioco */
-        #gameCanvas {
-            border-radius: 15px;
-            border: 4px solid #e91e63;
-            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
-            background: linear-gradient(180deg, #fff5f8 0%, #ffe8f0 100%);
-        }
-
-        /* Controlli gioco */
-        .game-controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .game-btn {
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
-            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .game-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
-        }
-
-        .game-btn.secondary {
-            background: white;
-            color: #e91e63;
-            border: 2px solid #e91e63;
-        }
-
-        .game-btn.secondary:hover {
-            background: #e91e63;
-            color: white;
-        }
-
-        /* Istruzioni */
-        .game-instructions {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: #c2185b;
-            text-align: center;
-        }
-
-        /* Game Over / Win overlay */
-        .game-overlay {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .game-overlay.show {
-            display: flex;
-        }
-
-        .overlay-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: #e91e63;
-            margin-bottom: 10px;
-        }
-
-        .overlay-score {
-            font-size: 1.3rem;
-            color: #c2185b;
-            margin-bottom: 20px;
-        }
-
-        /* Canvas wrapper per overlay */
-        .canvas-wrapper {
-            position: relative;
-        }
-
-        /* Decorazioni angoli */
-        .corner-decoration {
-            position: fixed;
-            font-size: 3rem;
-            opacity: 0.3;
-            z-index: 1;
-        }
-
-        .top-left { top: 20px; left: 20px; }
-        .top-right { top: 20px; right: 20px; }
-        .bottom-left { bottom: 20px; left: 20px; }
-        .bottom-right { bottom: 20px; right: 20px; }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .title {
-                font-size: 2.5rem;
-            }
-            .game-header {
-                width: 320px;
-            }
-            #gameCanvas {
-                width: 320px;
-                height: 400px;
-            }
-            .spoiler-btn {
-                padding: 15px 40px;
-                font-size: 1rem;
-            }
-        }
-
-        /* Scrollbar personalizzata */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #ffeef8;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff6b9d, #e91e63);
-            border-radius: 10px;
-        }
-    </style>
+    <title>🃏 Memory Card Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <!-- Cuori fluttuanti di sfondo -->
+    <!-- Sfondo decorativo -->
     <div class="hearts-bg" id="heartsBg"></div>
 
-    <!-- Decorazioni angoli -->
-    <div class="corner-decoration top-left">💕</div>
-    <div class="corner-decoration top-right">💕</div>
-    <div class="corner-decoration bottom-left">💕</div>
-    <div class="corner-decoration bottom-right">💕</div>
-
-    <!-- Container principale -->
     <div class="container">
-        <h1 class="title">Happy Valentine's Day</h1>
-        <p class="subtitle">✨ Una sorpresa speciale per te ✨</p>
+        <header class="header">
+            <h1 class="title">🃏 Memory Card Challenge</h1>
+            <p class="subtitle">Sfida i tuoi amici!</p>
+        </header>
 
-        <!-- Pulsante Spoiler -->
-        <button class="spoiler-btn" id="spoilerBtn" onclick="startGame()">
-            <span class="btn-heart">💖</span> Clicca per giocare!
-        </button>
-
-        <!-- Container Gioco -->
-        <div class="game-container" id="gameContainer">
-            <div class="game-header">
-                <div class="score-display">
-                    Punteggio: <span class="score-value" id="scoreDisplay">0</span>
+        <!-- SCHERMATA MENU -->
+        <div class="screen active" id="menuScreen">
+            <div class="menu-options">
+                <div class="mode-card" id="challengeModeBtn">
+                    <div class="mode-icon">🎯</div>
+                    <div class="mode-title">Challenge Code</div>
+                    <div class="mode-desc">Crea una sfida e invia il codice a un amico</div>
                 </div>
-                <div class="lives-display" id="livesDisplay">
-                    💖💖💖
-                </div>
-            </div>
-
-            <div class="canvas-wrapper">
-                <canvas id="gameCanvas" width="400" height="500"></canvas>
-                
-                <!-- Overlay Game Over / Win -->
-                <div class="game-overlay" id="gameOverlay">
-                    <div class="overlay-title" id="overlayTitle">Game Over</div>
-                    <div class="overlay-score" id="overlayScore">Punteggio: 0</div>
-                    <button class="game-btn" onclick="restartGame()">🔄 Rigioca</button>
+                <div class="mode-card" id="duelModeBtn">
+                    <div class="mode-icon">⚔️</div>
+                    <div class="mode-title">Duel Locale</div>
+                    <div class="mode-desc">Sfida un amico sullo stesso dispositivo a turni</div>
                 </div>
             </div>
+        </div>
 
-            <div class="game-controls">
-                <button class="game-btn" onclick="restartGame()">🔄 Ricomincia</button>
-                <button class="game-btn secondary" onclick="hideGame()">⬅️ Torna indietro</button>
+        <!-- SCHERMATA CHALLENGE MENU -->
+        <div class="screen" id="challengeMenu">
+            <div class="menu-options">
+                <div class="mode-card" id="createChallengeBtn">
+                    <div class="mode-icon">🆕</div>
+                    <div class="mode-title">Crea Sfida</div>
+                    <div class="mode-desc">Gioca e genera un codice da condividere</div>
+                </div>
+                <div class="mode-card" id="joinChallengeBtn">
+                    <div class="mode-icon">🔑</div>
+                    <div class="mode-title">Inserisci Codice</div>
+                    <div class="mode-desc">Hai ricevuto un codice? Sfida il tuo amico!</div>
+                </div>
             </div>
+            <button class="btn secondary small" id="backToMenuBtn1">
+                ⬅️ Torna al menu
+            </button>
+        </div>
 
-            <p class="game-instructions">
-                🎮 Usa le frecce ← → o muovi il mouse per controllare la barra<br>
-                💕 Distruggi tutti i cuori per vincere!
-            </p>
+        <!-- SCHERMATA INSERISCI CODICE -->
+        <div class="screen" id="enterCode">
+            <div class="info-box">
+                📝 Inserisci il codice sfida che hai ricevuto dal tuo amico
+            </div>
+            <div class="code-input-container">
+                <input type="text" class="code-input" id="challengeCodeInput" placeholder="ES: A1B2-12345-15-30" maxlength="20">
+            </div>
+            <button class="btn" id="startChallengeBtn">
+                🎮 Inizia Sfida
+            </button>
+            <button class="btn secondary small" id="backToChallengeMenuBtn">
+                ⬅️ Indietro
+            </button>
+            <div id="codeError" class="error-message"></div>
+        </div>
+
+        <!-- SCHERMATA DUEL SETUP -->
+        <div class="screen" id="duelSetup">
+            <div class="info-box">
+                ⚔️ <strong>Duel Mode a Turni</strong><br><br>
+                🎮 Giocatore 1 inizia<br>
+                ✅ Se trovi una coppia, continui a giocare<br>
+                ❌ Se sbagli, passa al Giocatore 2<br>
+                🏆 Vince chi fa meno mosse totali!
+            </div>
+            <button class="btn" id="startDuelBtn">
+                🎮 Inizia Duel
+            </button>
+            <button class="btn secondary small" id="backToMenuBtn2">
+                ⬅️ Torna al menu
+            </button>
+        </div>
+
+        <!-- SCHERMATA GIOCO CHALLENGE -->
+        <div class="screen" id="challengeGame">
+            <div class="game-stats">
+                <div class="stat">
+                    <div class="stat-label">Mosse</div>
+                    <div class="stat-value" id="movesCount">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Tempo</div>
+                    <div class="stat-value" id="timeCount">0s</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Coppie</div>
+                    <div class="stat-value" id="pairsCount">0/8</div>
+                </div>
+            </div>
+            <div class="cards-grid" id="challengeCardsGrid"></div>
+        </div>
+
+        <!-- SCHERMATA GIOCO DUEL -->
+        <div class="screen" id="duelGame">
+            <div class="turn-indicator" id="turnIndicator">🎮 Turno: Giocatore 1</div>
+            <div class="duel-stats">
+                <div class="player-stat active" id="player1Stat">
+                    <div class="player-name">Giocatore 1</div>
+                    <div class="player-score" id="player1Moves">0</div>
+                    <div class="stat-label">mosse</div>
+                </div>
+                <div class="player-stat" id="player2Stat">
+                    <div class="player-name">Giocatore 2</div>
+                    <div class="player-score" id="player2Moves">0</div>
+                    <div class="stat-label">mosse</div>
+                </div>
+            </div>
+            <div class="game-stats" style="max-width: 200px;">
+                <div class="stat">
+                    <div class="stat-label">Coppie trovate</div>
+                    <div class="stat-value" id="duelPairsCount">0/8</div>
+                </div>
+            </div>
+            <div class="cards-grid" id="duelCardsGrid"></div>
+        </div>
+
+        <!-- SCHERMATA RISULTATO CHALLENGE -->
+        <div class="screen" id="challengeResult">
+            <div class="results-container">
+                <div class="results-title" id="resultTitle">🎉 Complimenti!</div>
+                <div class="results-stats">
+                    <div class="result-item">
+                        <div class="result-value" id="finalMoves">0</div>
+                        <div class="result-label">Mosse</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-value" id="finalTime">0s</div>
+                        <div class="result-label">Tempo</div>
+                    </div>
+                </div>
+                <div class="challenge-code" id="generatedCode">
+                    <div class="code-label">📤 Condividi questo codice con un amico:</div>
+                    <div class="code-value" id="codeDisplay"></div>
+                    <button class="btn small copy-btn" id="copyCodeBtn">📋 Copia Codice</button>
+                </div>
+                <div id="challengeComparison">
+                    <div class="info-box" id="comparisonResult"></div>
+                </div>
+            </div>
+            <button class="btn" id="backToMenuBtn3">🏠 Menu Principale</button>
+        </div>
+
+        <!-- SCHERMATA RISULTATO DUEL -->
+        <div class="screen" id="duelResult">
+            <div class="results-container">
+                <div class="results-title" id="duelResultTitle">⚔️ Risultato Duel</div>
+                <div class="duel-results">
+                    <div class="duel-player-result" id="p1Result">
+                        <div class="winner-badge" id="p1Badge"></div>
+                        <div class="player-name">Giocatore 1</div>
+                        <div class="result-value" id="p1FinalMoves">0</div>
+                        <div class="result-label">mosse</div>
+                    </div>
+                    <div class="duel-player-result" id="p2Result">
+                        <div class="winner-badge" id="p2Badge"></div>
+                        <div class="player-name">Giocatore 2</div>
+                        <div class="result-value" id="p2FinalMoves">0</div>
+                        <div class="result-label">mosse</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn" id="rematchBtn">🔄 Rivincita</button>
+            <button class="btn secondary" id="backToMenuBtn4">🏠 Menu Principale</button>
+        </div>
+
+        <!-- SCHERMATA TRANSIZIONE DUEL (non più usata ma mantenuta per compatibilità) -->
+        <div class="screen" id="duelTransition">
+            <div class="results-container">
+                <div class="results-title">Giocatore 1 ha finito!</div>
+                <div class="result-item" style="margin: 20px 0;">
+                    <div class="result-value" id="p1TransitionMoves">0</div>
+                    <div class="result-label">mosse</div>
+                </div>
+                <div class="info-box">
+                    Passa il dispositivo al Giocatore 2<br>
+                    Stessa disposizione carte, sfida a fare meglio!
+                </div>
+            </div>
+            <button class="btn" id="startPlayer2Btn">▶️ Turno Giocatore 2</button>
         </div>
     </div>
 
-    <script>
-        // Variabili del gioco
-        let canvas, ctx;
-        let paddleWidth = 80;
-        let paddleHeight = 12;
-        let paddleX;
-        let ballRadius = 8;
-        let ballX, ballY;
-        let ballSpeedX = 4;
-        let ballSpeedY = -4;
-        let score = 0;
-        let lives = 3;
-        let gameRunning = false;
-        let animationId;
-
-        // Blocchi (cuori)
-        const brickRowCount = 5;
-        const brickColumnCount = 7;
-        const brickWidth = 45;
-        const brickHeight = 25;
-        const brickPadding = 8;
-        const brickOffsetTop = 40;
-        const brickOffsetLeft = 25;
-        let bricks = [];
-
-        // Colori dei blocchi (gradiente rosa)
-        const brickColors = ['#ff6b9d', '#e91e63', '#c2185b', '#ad1457', '#880e4f'];
-
-        // Genera cuori fluttuanti
-        function createFloatingHearts() {
-            const container = document.getElementById('heartsBg');
-            const hearts = ['💕', '💖', '💗', '💓', '💘', '💝', '❤️', '🩷'];
-            
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDelay = Math.random() * 8 + 's';
-                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
-                heart.style.fontSize = (15 + Math.random() * 20) + 'px';
-                container.appendChild(heart);
-            }
-        }
-
-        // Inizializza i blocchi
-        function initBricks() {
-            bricks = [];
-            for (let c = 0; c < brickColumnCount; c++) {
-                bricks[c] = [];
-                for (let r = 0; r < brickRowCount; r++) {
-                    bricks[c][r] = { 
-                        x: 0, 
-                        y: 0, 
-                        status: 1,
-                        color: brickColors[r]
-                    };
-                }
-            }
-        }
-
-        // Inizializza il gioco
-        function initGame() {
-            canvas = document.getElementById('gameCanvas');
-            ctx = canvas.getContext('2d');
-            
-            paddleX = (canvas.width - paddleWidth) / 2;
-            ballX = canvas.width / 2;
-            ballY = canvas.height - 50;
-            ballSpeedX = 4;
-            ballSpeedY = -4;
-            score = 0;
-            lives = 3;
-            
-            initBricks();
-            updateScoreDisplay();
-            updateLivesDisplay();
-            hideOverlay();
-        }
-
-        // Mostra il gioco
-        function startGame() {
-            document.getElementById('spoilerBtn').classList.add('hidden');
-            document.getElementById('gameContainer').classList.add('show');
-            
-            initGame();
-            gameRunning = true;
-            gameLoop();
-        }
-
-        // Nascondi il gioco
-        function hideGame() {
-            gameRunning = false;
-            cancelAnimationFrame(animationId);
-            document.getElementById('gameContainer').classList.remove('show');
-            setTimeout(() => {
-                document.getElementById('spoilerBtn').classList.remove('hidden');
-            }, 300);
-        }
-
-        // Ricomincia il gioco
-        function restartGame() {
-            cancelAnimationFrame(animationId);
-            initGame();
-            gameRunning = true;
-            gameLoop();
-        }
-
-        // Aggiorna display punteggio
-        function updateScoreDisplay() {
-            document.getElementById('scoreDisplay').textContent = score;
-        }
-
-        // Aggiorna display vite
-        function updateLivesDisplay() {
-            let heartsHTML = '';
-            for (let i = 0; i < 3; i++) {
-                heartsHTML += i < lives ? '💖' : '🖤';
-            }
-            document.getElementById('livesDisplay').innerHTML = heartsHTML;
-        }
-
-        // Mostra overlay
-        function showOverlay(title, finalScore) {
-            document.getElementById('overlayTitle').textContent = title;
-            document.getElementById('overlayScore').textContent = `Punteggio: ${finalScore}`;
-            document.getElementById('gameOverlay').classList.add('show');
-            gameRunning = false;
-        }
-
-        // Nascondi overlay
-        function hideOverlay() {
-            document.getElementById('gameOverlay').classList.remove('show');
-        }
-
-        // Disegna la pallina (cuore)
-        function drawBall() {
-            ctx.font = `${ballRadius * 2}px Arial`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('💗', ballX, ballY);
-        }
-
-        // Disegna la barra
-        function drawPaddle() {
-            const gradient = ctx.createLinearGradient(paddleX, 0, paddleX + paddleWidth, 0);
-            gradient.addColorStop(0, '#ff6b9d');
-            gradient.addColorStop(0.5, '#e91e63');
-            gradient.addColorStop(1, '#c2185b');
-            
-            ctx.beginPath();
-            ctx.roundRect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight, 6);
-            ctx.fillStyle = gradient;
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        // Disegna i blocchi (cuori)
-        function drawBricks() {
-            for (let c = 0; c < brickColumnCount; c++) {
-                for (let r = 0; r < brickRowCount; r++) {
-                    if (bricks[c][r].status === 1) {
-                        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-                        bricks[c][r].x = brickX;
-                        bricks[c][r].y = brickY;
-                        
-                        // Disegna blocco con bordo arrotondato
-                        ctx.beginPath();
-                        ctx.roundRect(brickX, brickY, brickWidth, brickHeight, 5);
-                        ctx.fillStyle = bricks[c][r].color;
-                        ctx.fill();
-                        ctx.closePath();
-                        
-                        // Disegna cuoricino sul blocco
-                        ctx.font = '12px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText('💕', brickX + brickWidth / 2, brickY + brickHeight / 2);
-                    }
-                }
-            }
-        }
-
-        // Rileva collisioni con i blocchi
-        function collisionDetection() {
-            for (let c = 0; c < brickColumnCount; c++) {
-                for (let r = 0; r < brickRowCount; r++) {
-                    const brick = bricks[c][r];
-                    if (brick.status === 1) {
-                        if (
-                            ballX > brick.x &&
-                            ballX < brick.x + brickWidth &&
-                            ballY > brick.y &&
-                            ballY < brick.y + brickHeight
-                        ) {
-                            ballSpeedY = -ballSpeedY;
-                            brick.status = 0;
-                            score += 10;
-                            updateScoreDisplay();
-                            
-                            // Controlla vittoria
-                            if (checkWin()) {
-                                showOverlay('🎉 Hai Vinto! 💕', score);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Controlla se ha vinto
-        function checkWin() {
-            for (let c = 0; c < brickColumnCount; c++) {
-                for (let r = 0; r < brickRowCount; r++) {
-                    if (bricks[c][r].status === 1) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        // Muovi la pallina
-        function moveBall() {
-            ballX += ballSpeedX;
-            ballY += ballSpeedY;
-            
-            // Collisione pareti laterali
-            if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
-                ballSpeedX = -ballSpeedX;
-            }
-            
-            // Collisione parete superiore
-            if (ballY - ballRadius < 0) {
-                ballSpeedY = -ballSpeedY;
-            }
-            
-            // Collisione con la barra
-            if (
-                ballY + ballRadius > canvas.height - paddleHeight - 10 &&
-                ballX > paddleX &&
-                ballX < paddleX + paddleWidth
-            ) {
-                // Calcola angolo di rimbalzo basato su dove colpisce la barra
-                const hitPoint = (ballX - paddleX) / paddleWidth;
-                const angle = hitPoint * 120 - 60; // -60 a +60 gradi
-                const speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY);
-                
-                ballSpeedX = speed * Math.sin(angle * Math.PI / 180);
-                ballSpeedY = -Math.abs(speed * Math.cos(angle * Math.PI / 180));
-            }
-            
-            // Pallina persa
-            if (ballY + ballRadius > canvas.height) {
-                lives--;
-                updateLivesDisplay();
-                
-                if (lives === 0) {
-                    showOverlay('💔 Game Over', score);
-                } else {
-                    // Reset posizione pallina
-                    ballX = canvas.width / 2;
-                    ballY = canvas.height - 50;
-                    ballSpeedX = 4;
-                    ballSpeedY = -4;
-                    paddleX = (canvas.width - paddleWidth) / 2;
-                }
-            }
-        }
-
-        // Loop principale del gioco
-        function gameLoop() {
-            if (!gameRunning) return;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            drawBricks();
-            drawBall();
-            drawPaddle();
-            collisionDetection();
-            moveBall();
-            
-            animationId = requestAnimationFrame(gameLoop);
-        }
-
-        // Controlli tastiera
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' && paddleX > 0) {
-                paddleX -= 30;
-            } else if (e.key === 'ArrowRight' && paddleX < canvas.width - paddleWidth) {
-                paddleX += 30;
-            }
-        });
-
-        // Controllo mouse
-        document.addEventListener('mousemove', (e) => {
-            if (!gameRunning) return;
-            
-            const canvas = document.getElementById('gameCanvas');
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            
-            if (mouseX > 0 && mouseX < canvas.width) {
-                paddleX = mouseX - paddleWidth / 2;
-                
-                // Limiti
-                if (paddleX < 0) paddleX = 0;
-                if (paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
-            }
-        });
-
-        // Controllo touch per mobile
-        document.addEventListener('touchmove', (e) => {
-            if (!gameRunning) return;
-            
-            const canvas = document.getElementById('gameCanvas');
-            const rect = canvas.getBoundingClientRect();
-            const touchX = e.touches[0].clientX - rect.left;
-            
-            if (touchX > 0 && touchX < canvas.width) {
-                paddleX = touchX - paddleWidth / 2;
-                
-                if (paddleX < 0) paddleX = 0;
-                if (paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
-            }
-        });
-
-        // Inizializza
-        document.addEventListener('DOMContentLoaded', function() {
-            createFloatingHearts();
-        });
-    </script>
+    <script type="module" src="./script.js"></script>
 </body>
 
 </html>
