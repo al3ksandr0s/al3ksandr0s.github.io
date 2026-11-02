@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosa sto ascoltando</title>
+    <title>Cosa sto ascoltando su Spotify</title>
     <style>
         body {
-            background-color: #0d0d0d;
+            background-color: #0c0c0c;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
@@ -16,28 +16,37 @@
             margin: 0;
         }
 
-        /* Stile del Widget Spotify */
         .spotify-card {
-            background: #181818;
+            background: linear-gradient(135deg, #1f1f1f 0%, #121212 100%);
             color: #fff;
             padding: 16px;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             gap: 16px;
             width: 100%;
-            max-width: 360px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            max-width: 380px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
             box-sizing: border-box;
-            border: 1px solid #282828;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .album-cover-container {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
         }
 
         .spotify-card img {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
             object-fit: cover;
             background-color: #282828;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
         .spotify-info {
@@ -50,21 +59,40 @@
             color: #1db954;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            letter-spacing: 0.8px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #1db954;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #1db954;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.25); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
         }
 
         .spotify-track {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .spotify-artist {
-            font-size: 12px;
+            font-size: 13px;
             color: #b3b3b3;
             white-space: nowrap;
             overflow: hidden;
@@ -74,19 +102,22 @@
 </head>
 <body>
 
-    <!-- Widget HTML -->
     <div class="spotify-card">
-        <img id="track-image" src="" alt="Copertina Album">
+        <div class="album-cover-container">
+            <img id="track-image" src="" alt="Copertina Album">
+        </div>
         <div class="spotify-info">
-            <div class="spotify-status" id="live-tag">Caricamento...</div>
+            <div class="spotify-status">
+                <span id="status-dot"></span>
+                <span id="live-tag">Caricamento...</span>
+            </div>
             <div class="spotify-track" id="track-name">In attesa dei dati</div>
             <div class="spotify-artist" id="artist-name">Last.fm</div>
         </div>
     </div>
 
-    <!-- Script refresh data-->
     <script>
-        const lfmUser = "peyroc";
+        const lfmUser = "Peyroc";
         const lfmApiKey = "9da9def7ce67a5252ac34cb518f86a85";
 
         async function updateWidget() {
@@ -99,22 +130,35 @@
 
                     const trackName = track.name;
                     const artistName = track.artist["#text"];
-                    const imageUrl = track.image && track.image[2]['#text'] 
-                        ? track.image[2]['#text'] 
-                        : 'https://via.placeholder.com/60?text=🎵';
+                    
+                    let imageUrl = "";
+                    if (track.image && track.image.length > 0) {
+                        const largeImg = track.image.find(img => img.size === "large" || img.size === "extralarge");
+                        imageUrl = largeImg ? largeImg['#text'] : track.image[track.image.length - 1]['#text'];
+                    }
+                    
+                    const fallbackImage = "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=150&auto=format&fit=crop&q=80";
+                    const finalImageUrl = (imageUrl && imageUrl.trim() !== "") ? imageUrl : fallbackImage;
 
                     const isPlaying = track["@attr"] && track["@attr"].nowplaying === "true";
+
                     document.getElementById("track-name").innerText = trackName;
                     document.getElementById("artist-name").innerText = artistName;
-                    document.getElementById("track-image").src = imageUrl;
+                    document.getElementById("track-image").src = finalImageUrl;
                     
                     const statusEl = document.getElementById("live-tag");
+                    const dotEl = document.getElementById("status-dot");
+
                     if (isPlaying) {
-                        statusEl.innerHTML = "🟢 In ascolto ora";
+                        statusEl.innerHTML = "In ascolto ora";
                         statusEl.style.color = "#1db954";
+                        dotEl.className = "pulse-dot";
+                        dotEl.style.display = "inline-block";
                     } else {
-                        statusEl.innerHTML = "⏳ Ultimo ascolto";
-                        statusEl.style.color = "#b3b3b3";
+                        statusEl.innerHTML = "Ultimo ascolto";
+                        statusEl.style.color = "#888888";
+                        dotEl.className = "";
+                        dotEl.style.display = "none";
                     }
                 }
             } catch (error) {
@@ -123,7 +167,6 @@
             }
         }
 
-        // Carica subito e aggiorna ogni 15 secondi
         updateWidget();
         setInterval(updateWidget, 5000);
     </script>
